@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Activity type colors
+        running: "hsl(var(--running))",
+        strength: "hsl(var(--strength))",
+        swimming: "hsl(var(--swimming))",
+        star: "hsl(var(--star))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
