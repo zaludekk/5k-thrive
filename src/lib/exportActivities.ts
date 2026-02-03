@@ -1,0 +1,81 @@
+import { Activity } from '@/types/activity';
+import { format, parseISO } from 'date-fns';
+
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+export function exportActivitiesToCSV(activities: Activity[]): void {
+  if (activities.length === 0) {
+    return;
+  }
+
+  const headers = ['Date', 'Type', 'Details', 'Distance', 'Time', 'Feeling', 'Name', 'Sets', 'Reps', 'Duration'];
+  
+  const rows = activities
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .map(activity => {
+      const date = format(parseISO(activity.date), 'yyyy-MM-dd');
+      
+      switch (activity.type) {
+        case 'running':
+          return [
+            date,
+            'Running',
+            `${activity.distance}km in ${formatTime(activity.time)}`,
+            `${activity.distance} km`,
+            formatTime(activity.time),
+            activity.feeling.toString(),
+            '',
+            '',
+            '',
+            ''
+          ];
+        case 'strength':
+          return [
+            date,
+            'Strength',
+            activity.name + (activity.sets && activity.reps ? ` (${activity.sets}x${activity.reps})` : ''),
+            '',
+            '',
+            '',
+            activity.name,
+            activity.sets?.toString() || '',
+            activity.reps?.toString() || '',
+            activity.duration ? formatTime(activity.duration) : ''
+          ];
+        case 'swimming':
+          return [
+            date,
+            'Swimming',
+            `${activity.distance}m in ${formatTime(activity.time)}`,
+            `${activity.distance} m`,
+            formatTime(activity.time),
+            '',
+            '',
+            '',
+            '',
+            ''
+          ];
+      }
+    });
+
+  const csvContent = [
+    headers.join(','),
+    ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+  ].join('\n');
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', `activity-history-${format(new Date(), 'yyyy-MM-dd')}.csv`);
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
