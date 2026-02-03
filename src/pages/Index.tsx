@@ -5,6 +5,9 @@ import { ActivityHeatmap } from '@/components/dashboard/ActivityHeatmap';
 import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
+import { Button } from '@/components/ui/button';
+import { Download } from 'lucide-react';
+import { exportActivitiesToCSV } from '@/lib/exportActivities';
 
 const Index = () => {
   const { activities, isLoading, addActivity, updateActivity, deleteActivity, getStats } = useActivities();
@@ -33,7 +36,18 @@ const Index = () => {
               <h1 className="text-xl font-bold text-foreground">5K Tracker</h1>
               <p className="text-sm text-muted-foreground">Cross-training & Running</p>
             </div>
-            <AddActivityDialog onAdd={handleAddActivity} />
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => exportActivitiesToCSV(activities)}
+                disabled={activities.length === 0}
+              >
+                <Download className="h-4 w-4 mr-1" />
+                Download Data
+              </Button>
+              <AddActivityDialog onAdd={handleAddActivity} />
+            </div>
           </div>
         </div>
       </header>
