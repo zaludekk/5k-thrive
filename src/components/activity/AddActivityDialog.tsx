@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Activity, ActivityType, RunningActivity, StrengthActivity, SwimmingActivity } from '@/types/activity';
-import { Plus, CalendarIcon, Dumbbell, Waves } from 'lucide-react';
+import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity } from '@/types/activity';
+import { Plus, CalendarIcon, Waves } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { FeelingSelector } from './FeelingSelector';
@@ -42,20 +42,28 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     editActivity?.type === 'running' ? editActivity.feeling : 3
   );
   
-  // Strength state
-  const [exerciseName, setExerciseName] = useState(
-    editActivity?.type === 'strength' ? editActivity.name : ''
+  // Squats state
+  const [squatsReps, setSquatsReps] = useState(
+    editActivity?.type === 'squats' && editActivity.reps ? editActivity.reps.toString() : ''
   );
-  const [reps, setReps] = useState(
-    editActivity?.type === 'strength' && editActivity.reps ? editActivity.reps.toString() : ''
+  const [squatsSets, setSquatsSets] = useState(
+    editActivity?.type === 'squats' && editActivity.sets ? editActivity.sets.toString() : ''
   );
-  const [sets, setSets] = useState(
-    editActivity?.type === 'strength' && editActivity.sets ? editActivity.sets.toString() : ''
+  
+  // Push-up state
+  const [pushupReps, setPushupReps] = useState(
+    editActivity?.type === 'pushup' && editActivity.reps ? editActivity.reps.toString() : ''
   );
-  const [strengthDuration, setStrengthDuration] = useState(
-    editActivity?.type === 'strength' && editActivity.duration 
-      ? Math.floor(editActivity.duration / 60).toString() 
-      : ''
+  const [pushupSets, setPushupSets] = useState(
+    editActivity?.type === 'pushup' && editActivity.sets ? editActivity.sets.toString() : ''
+  );
+  
+  // Plank state
+  const [plankMinutes, setPlankMinutes] = useState(
+    editActivity?.type === 'plank' ? Math.floor(editActivity.duration / 60).toString() : ''
+  );
+  const [plankSeconds, setPlankSeconds] = useState(
+    editActivity?.type === 'plank' ? (editActivity.duration % 60).toString() : ''
   );
   
   // Swimming state
@@ -75,10 +83,12 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     setRunMinutes('');
     setRunSeconds('');
     setFeeling(3);
-    setExerciseName('');
-    setReps('');
-    setSets('');
-    setStrengthDuration('');
+    setSquatsReps('');
+    setSquatsSets('');
+    setPushupReps('');
+    setPushupSets('');
+    setPlankMinutes('');
+    setPlankSeconds('');
     setSwimDistance('');
     setSwimMinutes('');
     setSwimSeconds('');
@@ -87,7 +97,7 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
   const handleSubmit = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
-    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<StrengthActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'>;
+    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'>;
     
     if (activeTab === 'running') {
       activityData = {
@@ -97,14 +107,25 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
         time: (parseInt(runMinutes) || 0) * 60 + (parseInt(runSeconds) || 0),
         feeling,
       };
-    } else if (activeTab === 'strength') {
+    } else if (activeTab === 'squats') {
       activityData = {
-        type: 'strength' as const,
+        type: 'squats' as const,
         date: dateStr,
-        name: exerciseName,
-        reps: reps ? parseInt(reps) : undefined,
-        sets: sets ? parseInt(sets) : undefined,
-        duration: strengthDuration ? parseInt(strengthDuration) * 60 : undefined,
+        reps: squatsReps ? parseInt(squatsReps) : undefined,
+        sets: squatsSets ? parseInt(squatsSets) : undefined,
+      };
+    } else if (activeTab === 'pushup') {
+      activityData = {
+        type: 'pushup' as const,
+        date: dateStr,
+        reps: pushupReps ? parseInt(pushupReps) : undefined,
+        sets: pushupSets ? parseInt(pushupSets) : undefined,
+      };
+    } else if (activeTab === 'plank') {
+      activityData = {
+        type: 'plank' as const,
+        date: dateStr,
+        duration: (parseInt(plankMinutes) || 0) * 60 + (parseInt(plankSeconds) || 0),
       };
     } else {
       activityData = {
@@ -170,15 +191,21 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
 
           {/* Activity Type Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActivityType)}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="running" className="gap-1">
-                <span className="text-running">🏃</span> Running
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="running" className="gap-1 text-xs px-1">
+                <span>🏃</span> Running
               </TabsTrigger>
-              <TabsTrigger value="strength" className="gap-1">
-                <Dumbbell className="h-4 w-4" /> Strength
+              <TabsTrigger value="squats" className="gap-1 text-xs px-1">
+                <span>🏋️</span> Squats
               </TabsTrigger>
-              <TabsTrigger value="swimming" className="gap-1">
-                <Waves className="h-4 w-4" /> Swimming
+              <TabsTrigger value="pushup" className="gap-1 text-xs px-1">
+                <span>💪</span> Push-Up
+              </TabsTrigger>
+              <TabsTrigger value="plank" className="gap-1 text-xs px-1">
+                <span>🧘</span> Plank
+              </TabsTrigger>
+              <TabsTrigger value="swimming" className="gap-1 text-xs px-1">
+                <Waves className="h-3 w-3" /> Swim
               </TabsTrigger>
             </TabsList>
             
@@ -220,24 +247,16 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
               </div>
             </TabsContent>
 
-            {/* Strength Form */}
-            <TabsContent value="strength" className="space-y-4 pt-4">
-              <div className="space-y-2">
-                <Label>Exercise Name</Label>
-                <Input
-                  placeholder="e.g., Push-ups, Squats"
-                  value={exerciseName}
-                  onChange={(e) => setExerciseName(e.target.value)}
-                />
-              </div>
+            {/* Squats Form */}
+            <TabsContent value="squats" className="space-y-4 pt-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Reps</Label>
                   <Input
                     type="number"
-                    placeholder="e.g., 10"
-                    value={reps}
-                    onChange={(e) => setReps(e.target.value)}
+                    placeholder="e.g., 15"
+                    value={squatsReps}
+                    onChange={(e) => setSquatsReps(e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
@@ -245,19 +264,58 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
                   <Input
                     type="number"
                     placeholder="e.g., 3"
-                    value={sets}
-                    onChange={(e) => setSets(e.target.value)}
+                    value={squatsSets}
+                    onChange={(e) => setSquatsSets(e.target.value)}
                   />
                 </div>
               </div>
+            </TabsContent>
+
+            {/* Push-Up Form */}
+            <TabsContent value="pushup" className="space-y-4 pt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Reps</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 20"
+                    value={pushupReps}
+                    onChange={(e) => setPushupReps(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Sets</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 3"
+                    value={pushupSets}
+                    onChange={(e) => setPushupSets(e.target.value)}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Plank Form */}
+            <TabsContent value="plank" className="space-y-4 pt-4">
               <div className="space-y-2">
-                <Label>Duration (minutes, optional)</Label>
-                <Input
-                  type="number"
-                  placeholder="e.g., 30"
-                  value={strengthDuration}
-                  onChange={(e) => setStrengthDuration(e.target.value)}
-                />
+                <Label>Duration</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={plankMinutes}
+                    onChange={(e) => setPlankMinutes(e.target.value)}
+                    className="w-20"
+                  />
+                  <span>:</span>
+                  <Input
+                    type="number"
+                    placeholder="Sec"
+                    value={plankSeconds}
+                    onChange={(e) => setPlankSeconds(e.target.value)}
+                    className="w-20"
+                  />
+                </div>
               </div>
             </TabsContent>
 
