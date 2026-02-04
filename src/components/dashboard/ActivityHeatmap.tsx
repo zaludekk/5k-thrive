@@ -59,14 +59,17 @@ export function ActivityHeatmap({ activities }: ActivityHeatmapProps) {
               <div
                 key={dateKey}
                 className={cn(
-                  'aspect-square rounded-md flex items-center justify-center text-xs transition-colors',
+                  'aspect-square rounded-md flex flex-col items-center justify-center text-xs transition-colors',
                   isFuture ? 'bg-muted/30' : getIntensityClass(count),
                   isToday && 'ring-2 ring-primary ring-offset-1',
                   count > 0 && !isFuture && 'text-primary-foreground font-medium'
                 )}
                 title={`${format(day, 'MMM d')}: ${count} ${count === 1 ? 'activity' : 'activities'}`}
               >
-                {format(day, 'd')}
+                <span className="text-[10px] leading-none">{format(day, 'd')}</span>
+                {count > 0 && !isFuture && (
+                  <span className="text-[8px] leading-none mt-0.5 opacity-90">{count}×</span>
+                )}
               </div>
             );
           })}
