@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, ActivityStats, RunningActivity, StrengthActivity, SwimmingActivity } from '@/types/activity';
+import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
@@ -50,14 +50,28 @@ export function useActivities() {
                 time: runActivity.time,
                 feeling: runActivity.feeling,
               };
-            } else if (activity.type === 'strength') {
-              const strengthActivity = activity as StrengthActivity;
+            } else if (activity.type === 'squats') {
+              const squatsActivity = activity as SquatsActivity;
               insertData = {
                 ...baseData,
-                name: strengthActivity.name,
-                reps: strengthActivity.reps,
-                sets: strengthActivity.sets,
-                duration: strengthActivity.duration,
+                name: 'Squats',
+                reps: squatsActivity.reps,
+                sets: squatsActivity.sets,
+              };
+            } else if (activity.type === 'pushup') {
+              const pushupActivity = activity as PushupActivity;
+              insertData = {
+                ...baseData,
+                name: 'Push-Up',
+                reps: pushupActivity.reps,
+                sets: pushupActivity.sets,
+              };
+            } else if (activity.type === 'plank') {
+              const plankActivity = activity as PlankActivity;
+              insertData = {
+                ...baseData,
+                name: 'Plank',
+                duration: plankActivity.duration,
               };
             } else if (activity.type === 'swimming') {
               const swimActivity = activity as SwimmingActivity;
@@ -107,14 +121,25 @@ export function useActivities() {
             time: record.time || 0,
             feeling: record.feeling || 3,
           };
-        } else if (record.type === 'strength') {
+        } else if (record.type === 'squats') {
           return {
             ...baseActivity,
-            type: 'strength' as const,
-            name: record.name || '',
-            reps: record.reps,
-            sets: record.sets,
-            duration: record.duration,
+            type: 'squats' as const,
+            reps: record.reps ?? undefined,
+            sets: record.sets ?? undefined,
+          };
+        } else if (record.type === 'pushup') {
+          return {
+            ...baseActivity,
+            type: 'pushup' as const,
+            reps: record.reps ?? undefined,
+            sets: record.sets ?? undefined,
+          };
+        } else if (record.type === 'plank') {
+          return {
+            ...baseActivity,
+            type: 'plank' as const,
+            duration: record.duration || 0,
           };
         } else {
           return {
@@ -164,14 +189,28 @@ export function useActivities() {
         time: runActivity.time,
         feeling: runActivity.feeling,
       };
-    } else if (activity.type === 'strength') {
-      const strengthActivity = activity as Omit<StrengthActivity, 'id' | 'createdAt'>;
+    } else if (activity.type === 'squats') {
+      const squatsActivity = activity as Omit<SquatsActivity, 'id' | 'createdAt'>;
       insertData = {
         ...baseData,
-        name: strengthActivity.name,
-        reps: strengthActivity.reps,
-        sets: strengthActivity.sets,
-        duration: strengthActivity.duration,
+        name: 'Squats',
+        reps: squatsActivity.reps,
+        sets: squatsActivity.sets,
+      };
+    } else if (activity.type === 'pushup') {
+      const pushupActivity = activity as Omit<PushupActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        name: 'Push-Up',
+        reps: pushupActivity.reps,
+        sets: pushupActivity.sets,
+      };
+    } else if (activity.type === 'plank') {
+      const plankActivity = activity as Omit<PlankActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        name: 'Plank',
+        duration: plankActivity.duration,
       };
     } else if (activity.type === 'swimming') {
       const swimActivity = activity as Omit<SwimmingActivity, 'id' | 'createdAt'>;
@@ -213,17 +252,41 @@ export function useActivities() {
         sets: null,
         duration: null,
       };
-    } else if (updatedActivity.type === 'strength') {
-      const strengthActivity = updatedActivity as StrengthActivity;
+    } else if (updatedActivity.type === 'squats') {
+      const squatsActivity = updatedActivity as SquatsActivity;
       updateData = {
         ...updateData,
-        name: strengthActivity.name,
-        reps: strengthActivity.reps,
-        sets: strengthActivity.sets,
-        duration: strengthActivity.duration,
+        name: 'Squats',
+        reps: squatsActivity.reps,
+        sets: squatsActivity.sets,
         distance: null,
         time: null,
         feeling: null,
+        duration: null,
+      };
+    } else if (updatedActivity.type === 'pushup') {
+      const pushupActivity = updatedActivity as PushupActivity;
+      updateData = {
+        ...updateData,
+        name: 'Push-Up',
+        reps: pushupActivity.reps,
+        sets: pushupActivity.sets,
+        distance: null,
+        time: null,
+        feeling: null,
+        duration: null,
+      };
+    } else if (updatedActivity.type === 'plank') {
+      const plankActivity = updatedActivity as PlankActivity;
+      updateData = {
+        ...updateData,
+        name: 'Plank',
+        duration: plankActivity.duration,
+        distance: null,
+        time: null,
+        feeling: null,
+        reps: null,
+        sets: null,
       };
     } else if (updatedActivity.type === 'swimming') {
       const swimActivity = updatedActivity as SwimmingActivity;

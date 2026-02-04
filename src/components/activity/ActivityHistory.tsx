@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Activity, RunningActivity, StrengthActivity, SwimmingActivity } from '@/types/activity';
+import { Activity, SquatsActivity, PushupActivity, PlankActivity } from '@/types/activity';
 import { AddActivityDialog } from './AddActivityDialog';
 import { format, parseISO } from 'date-fns';
-import { Pencil, Trash2, Dumbbell, Waves, Star, History } from 'lucide-react';
+import { Pencil, Trash2, Waves, Star, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
@@ -34,8 +34,12 @@ function ActivityIcon({ type }: { type: Activity['type'] }) {
   switch (type) {
     case 'running':
       return <span className="text-lg">🏃</span>;
-    case 'strength':
-      return <Dumbbell className="h-4 w-4 text-strength" />;
+    case 'squats':
+      return <span className="text-lg">🏋️</span>;
+    case 'pushup':
+      return <span className="text-lg">💪</span>;
+    case 'plank':
+      return <span className="text-lg">🧘</span>;
     case 'swimming':
       return <Waves className="h-4 w-4 text-swimming" />;
   }
@@ -63,22 +67,36 @@ function ActivityDetails({ activity }: { activity: Activity }) {
           </div>
         </div>
       );
-    case 'strength':
+    case 'squats':
       return (
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{activity.name}</span>
+          <span className="font-medium text-foreground">Squats</span>
           {activity.reps && activity.sets && (
             <>
               <span>•</span>
               <span>{activity.sets}×{activity.reps} reps</span>
             </>
           )}
-          {activity.duration && (
+        </div>
+      );
+    case 'pushup':
+      return (
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">Push-Up</span>
+          {activity.reps && activity.sets && (
             <>
               <span>•</span>
-              <span>{Math.floor(activity.duration / 60)} min</span>
+              <span>{activity.sets}×{activity.reps} reps</span>
             </>
           )}
+        </div>
+      );
+    case 'plank':
+      return (
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">Plank</span>
+          <span>•</span>
+          <span>{formatTime(activity.duration)}</span>
         </div>
       );
     case 'swimming':
@@ -104,6 +122,19 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
     setEditingActivity(null);
   };
 
+  const getActivityBorderColor = (type: Activity['type']) => {
+    switch (type) {
+      case 'running':
+        return 'border-l-running';
+      case 'squats':
+      case 'pushup':
+      case 'plank':
+        return 'border-l-strength';
+      case 'swimming':
+        return 'border-l-swimming';
+    }
+  };
+
   return (
     <>
       <Card>
@@ -125,10 +156,8 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
                 <div
                   key={activity.id}
                   className={cn(
-                    "flex items-center justify-between p-3 rounded-lg border transition-colors",
-                    activity.type === 'running' && "border-l-4 border-l-running",
-                    activity.type === 'strength' && "border-l-4 border-l-strength",
-                    activity.type === 'swimming' && "border-l-4 border-l-swimming"
+                    "flex items-center justify-between p-3 rounded-lg border transition-colors border-l-4",
+                    getActivityBorderColor(activity.type)
                   )}
                 >
                   <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -139,7 +168,7 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
                         <span>{format(parseISO(activity.date), 'EEE, MMM d')}</span>
                         <span className="capitalize px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                          {activity.type}
+                          {activity.type === 'pushup' ? 'Push-Up' : activity.type}
                         </span>
                       </div>
                       <ActivityDetails activity={activity} />
