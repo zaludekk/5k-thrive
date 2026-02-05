@@ -121,32 +121,40 @@ export function useActivities() {
             time: record.time || 0,
             feeling: record.feeling || 3,
           };
-        } else if (record.type === 'squats') {
+        } else if (record.type === 'squats' || (record.type === 'strength' && record.name?.toLowerCase() === 'squats')) {
           return {
             ...baseActivity,
             type: 'squats' as const,
             reps: record.reps ?? undefined,
             sets: record.sets ?? undefined,
           };
-        } else if (record.type === 'pushup') {
+        } else if (record.type === 'pushup' || (record.type === 'strength' && (record.name?.toLowerCase() === 'push-up' || record.name?.toLowerCase() === 'push'))) {
           return {
             ...baseActivity,
             type: 'pushup' as const,
             reps: record.reps ?? undefined,
             sets: record.sets ?? undefined,
           };
-        } else if (record.type === 'plank') {
+        } else if (record.type === 'plank' || (record.type === 'strength' && record.name?.toLowerCase() === 'plank')) {
           return {
             ...baseActivity,
             type: 'plank' as const,
             duration: record.duration || 0,
           };
-        } else {
+        } else if (record.type === 'swimming') {
           return {
             ...baseActivity,
             type: 'swimming' as const,
             distance: Number(record.distance),
             time: record.time || 0,
+          };
+        } else {
+          // Fallback for unknown strength activities - treat as squats
+          return {
+            ...baseActivity,
+            type: 'squats' as const,
+            reps: record.reps ?? undefined,
+            sets: record.sets ?? undefined,
           };
         }
       });
