@@ -15,43 +15,51 @@ function formatTime(seconds: number): string {
 export function StatsCards({ stats }: StatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-        <CardContent className="pt-6">
+      {/* Total Km Card - Cyan Neon */}
+      <Card className="glass-panel neon-glow-cyan border-neon-cyan/30 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 to-transparent pointer-events-none" />
+        <CardContent className="pt-6 relative">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/20 rounded-lg">
-              <Activity className="h-5 w-5 text-primary" />
+            <div className="p-3 bg-neon-cyan/20 rounded-xl border border-neon-cyan/30">
+              <Activity className="h-5 w-5 text-neon-cyan" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Total Km This Month</p>
-              <p className="text-2xl font-bold text-foreground">{stats.totalKmThisMonth} km</p>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Total Km This Month</p>
+              <p className="text-3xl font-bold text-neon-cyan neon-text-cyan">{stats.totalKmThisMonth} km</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-secondary/10 to-secondary/5 border-secondary/20">
-        <CardContent className="pt-6">
+      {/* Total Activities Card - Purple Neon */}
+      <Card className="glass-panel neon-glow-purple border-neon-purple/30 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-neon-purple/10 to-transparent pointer-events-none" />
+        <CardContent className="pt-6 relative">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-secondary/20 rounded-lg">
-              <Timer className="h-5 w-5 text-secondary" />
+            <div className="p-3 bg-neon-purple/20 rounded-xl border border-neon-purple/30">
+              <Timer className="h-5 w-5 text-neon-purple" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Total Activities</p>
-              <p className="text-2xl font-bold text-foreground">{stats.totalActivitiesThisMonth}</p>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Total Activities</p>
+              <p className="text-3xl font-bold text-neon-purple" style={{ textShadow: '0 0 10px hsl(280 100% 65% / 0.5)' }}>
+                {stats.totalActivitiesThisMonth}
+              </p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-gradient-to-br from-running/10 to-running/5 border-running/20">
-        <CardContent className="pt-6">
+      {/* Best 5K Card - Green Neon */}
+      <Card className="glass-panel neon-glow-green border-neon-green/30 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-br from-neon-green/10 to-transparent pointer-events-none" />
+        <CardContent className="pt-6 relative">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-running/20 rounded-lg">
-              <Trophy className="h-5 w-5 text-running" />
+            <div className="p-3 bg-neon-green/20 rounded-xl border border-neon-green/30">
+              <Trophy className="h-5 w-5 text-neon-green" />
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Best 5K Time</p>
-              <p className="text-2xl font-bold text-foreground">
+              <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">Best 5K Time</p>
+              <p className="text-3xl font-bold text-neon-green neon-text-green">
                 {stats.best5KTime ? formatTime(stats.best5KTime) : '--:--'}
               </p>
             </div>
