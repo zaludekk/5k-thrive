@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Target } from 'lucide-react';
 
 interface GoalProgressProps {
@@ -34,16 +33,38 @@ export function GoalProgress({ currentBestTime, goalTime = 25 * 60 }: GoalProgre
   }
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
+    <Card className="glass-panel border-neon-cyan/20 overflow-hidden relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-neon-cyan/5 via-neon-purple/5 to-neon-green/5 pointer-events-none" />
+      <CardHeader className="pb-2 relative">
         <CardTitle className="text-lg flex items-center gap-2">
-          <Target className="h-5 w-5 text-primary" />
-          5K Goal Progress
+          <div className="p-2 bg-neon-cyan/20 rounded-lg border border-neon-cyan/30">
+            <Target className="h-5 w-5 text-neon-cyan" />
+          </div>
+          <span className="text-foreground uppercase tracking-wider font-semibold">5K Goal Progress</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <Progress value={progress} className="h-3" />
-        <p className="text-sm text-muted-foreground">{statusText}</p>
+      <CardContent className="space-y-4 relative">
+        {/* Neon Progress Bar */}
+        <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/50 border border-white/10">
+          <div 
+            className="h-full transition-all duration-700 ease-out rounded-full"
+            style={{ 
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, hsl(180 100% 50%), hsl(280 100% 65%), hsl(160 100% 50%))',
+              boxShadow: '0 0 20px hsl(180 100% 50% / 0.5), 0 0 40px hsl(280 100% 65% / 0.3)'
+            }}
+          />
+          {/* Animated scanline effect */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"
+            style={{ animationDuration: '2s' }}
+          />
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">{statusText}</p>
+          <span className="text-lg font-bold text-neon-cyan neon-text-cyan">{Math.round(progress)}%</span>
+        </div>
       </CardContent>
     </Card>
   );

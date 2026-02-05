@@ -29,12 +29,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+      <header className="sticky top-0 z-10 glass-panel border-b border-neon-cyan/20">
         <div className="container max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-foreground">5K Tracker</h1>
-              <p className="text-sm text-muted-foreground">Cross-training & Running</p>
+              <h1 className="text-2xl font-bold text-neon-cyan neon-text-cyan uppercase tracking-widest">5K Tracker</h1>
+              <p className="text-sm text-muted-foreground tracking-wider">Cross-training & Running HUD</p>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -72,9 +72,9 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t py-4 mt-8">
+      <footer className="border-t border-neon-cyan/10 py-4 mt-8">
         <div className="container max-w-4xl mx-auto px-4 text-center text-sm text-muted-foreground">
-          Track your progress • Improve your 5K time
+          <span className="text-neon-cyan/60">◆</span> Track your progress <span className="text-neon-cyan/60">◆</span> Improve your 5K time <span className="text-neon-cyan/60">◆</span>
         </div>
       </footer>
     </div>

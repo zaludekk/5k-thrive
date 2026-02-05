@@ -52,6 +52,14 @@ export default {
         strength: "hsl(var(--strength))",
         swimming: "hsl(var(--swimming))",
         star: "hsl(var(--star))",
+        // Neon colors
+        neon: {
+          cyan: "hsl(var(--neon-cyan))",
+          purple: "hsl(var(--neon-purple))",
+          green: "hsl(var(--neon-green))",
+          orange: "hsl(var(--neon-orange))",
+          pink: "hsl(var(--neon-pink))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
