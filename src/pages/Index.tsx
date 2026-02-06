@@ -2,6 +2,7 @@ import { useActivities } from '@/hooks/useActivities';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { GoalProgress } from '@/components/dashboard/GoalProgress';
 import { ActivityHeatmap } from '@/components/dashboard/ActivityHeatmap';
+import { PaceEvolution } from '@/components/dashboard/PaceEvolution';
 import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
@@ -62,6 +63,9 @@ const Index = () => {
 
         {/* Activity Heatmap */}
         <ActivityHeatmap activities={activities} />
+
+        {/* Pace Evolution Chart */}
+        <PaceEvolution activities={activities} />
 
         {/* Activity History */}
         <ActivityHistory 
