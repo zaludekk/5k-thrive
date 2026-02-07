@@ -102,47 +102,44 @@ export function ActivityHeatmap({ activities }: ActivityHeatmapProps) {
         </div>
       </CardHeader>
       <CardContent className="relative">
-        {/* GitHub-style contribution graph */}
-        <div className="flex gap-1 overflow-x-auto pb-2">
+        {/* GitHub-style contribution graph – scrollable on mobile */}
+        <div className="flex gap-0.5 sm:gap-1 overflow-x-auto pb-2 -mx-2 px-2">
           {/* Day labels */}
-          <div className="flex flex-col gap-1 mr-2 text-[10px] text-muted-foreground justify-around py-1">
+          <div className="flex flex-col gap-0.5 sm:gap-1 mr-1 sm:mr-2 text-[9px] sm:text-[10px] text-muted-foreground justify-around py-1 shrink-0">
             <span>Mon</span>
             <span>Wed</span>
             <span>Fri</span>
           </div>
           
           {/* Weeks grid */}
-          <div className="flex gap-1">
+          <div className="flex gap-0.5 sm:gap-1">
             {weeks.map((week, weekIndex) => (
-              <div key={weekIndex} className="flex flex-col gap-1">
+              <div key={weekIndex} className="flex flex-col gap-0.5 sm:gap-1">
                 {Array.from({ length: 7 }).map((_, dayIndex) => {
                   const day = week.find(d => d && d.getDay() === dayIndex);
                   if (!day) {
-                    return <div key={dayIndex} className="w-3 h-3" />;
+                    return <div key={dayIndex} className="w-2.5 h-2.5 sm:w-3 sm:h-3" />;
                   }
                   
                   const dateKey = format(day, 'yyyy-MM-dd');
                   const count = activityCountByDay.get(dateKey) || 0;
                   const isToday = isSameDay(day, now);
-                  const isStreak = count > 0;
                   
                   return (
                     <div
                       key={dayIndex}
                       className={cn(
-                        'w-3 h-3 rounded-sm transition-all duration-200 hover:scale-125 cursor-pointer relative group',
+                        'w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm transition-all duration-200 hover:scale-125 cursor-pointer relative group',
                         isToday && 'ring-1 ring-neon-cyan ring-offset-1 ring-offset-background'
                       )}
                       style={getIntensityStyle(count)}
                       title={`${format(day, 'MMM d, yyyy')}: ${count} ${count === 1 ? 'activity' : 'activities'}`}
                     >
-                      {/* Fire emoji for streak days with 2+ activities */}
                       {count >= 2 && (
-                        <span className="absolute -top-1 -right-1 text-[8px] z-10">🔥</span>
+                        <span className="absolute -top-1 -right-1 text-[6px] sm:text-[8px] z-10">🔥</span>
                       )}
                       
-                      {/* Tooltip */}
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-card border border-white/20 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-card border border-white/10 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-20">
                         {format(day, 'MMM d')}: {count} {count === 1 ? 'activity' : 'activities'}
                       </div>
                     </div>
@@ -154,16 +151,16 @@ export function ActivityHeatmap({ activities }: ActivityHeatmapProps) {
         </div>
         
         {/* Legend */}
-        <div className="flex items-center justify-end gap-2 mt-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-2 mt-4 text-[10px] sm:text-xs text-muted-foreground flex-wrap">
           <span>Less</span>
-          <div className="flex gap-1">
-            <div className="w-3 h-3 rounded-sm" style={getIntensityStyle(0)} />
-            <div className="w-3 h-3 rounded-sm" style={getIntensityStyle(1)} />
-            <div className="w-3 h-3 rounded-sm" style={getIntensityStyle(2)} />
-            <div className="w-3 h-3 rounded-sm" style={getIntensityStyle(3)} />
+          <div className="flex gap-0.5 sm:gap-1">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={getIntensityStyle(0)} />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={getIntensityStyle(1)} />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={getIntensityStyle(2)} />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm" style={getIntensityStyle(3)} />
           </div>
           <span>More</span>
-          <span className="ml-2">🔥 = 2+ activities</span>
+          <span className="ml-1 sm:ml-2">🔥 = 2+</span>
         </div>
       </CardContent>
     </Card>
