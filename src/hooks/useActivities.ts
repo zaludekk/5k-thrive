@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity } from '@/types/activity';
+import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
@@ -17,6 +17,7 @@ type ActivityInsert = {
   reps?: number | null;
   sets?: number | null;
   duration?: number | null;
+  steps?: number | null;
   user_id?: string | null;
 };
 
@@ -79,6 +80,14 @@ export function useActivities() {
                 ...baseData,
                 distance: swimActivity.distance,
                 time: swimActivity.time,
+              };
+            } else if (activity.type === 'walking') {
+              const walkActivity = activity as WalkingActivity;
+              insertData = {
+                ...baseData,
+                distance: walkActivity.distance,
+                time: walkActivity.time,
+                steps: walkActivity.steps,
               };
             }
 
@@ -147,6 +156,14 @@ export function useActivities() {
             type: 'swimming' as const,
             distance: Number(record.distance),
             time: record.time || 0,
+          };
+        } else if (record.type === 'walking') {
+          return {
+            ...baseActivity,
+            type: 'walking' as const,
+            distance: Number(record.distance),
+            time: record.time || 0,
+            steps: record.steps ?? undefined,
           };
         } else {
           // Fallback for unknown strength activities - treat as squats
@@ -227,6 +244,14 @@ export function useActivities() {
         distance: swimActivity.distance,
         time: swimActivity.time,
       };
+    } else if (activity.type === 'walking') {
+      const walkActivity = activity as Omit<WalkingActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        distance: walkActivity.distance,
+        time: walkActivity.time,
+        steps: walkActivity.steps,
+      };
     }
 
     const { error } = await supabase.from('activities').insert(insertData);
@@ -259,6 +284,7 @@ export function useActivities() {
         reps: null,
         sets: null,
         duration: null,
+        steps: null,
       };
     } else if (updatedActivity.type === 'squats') {
       const squatsActivity = updatedActivity as SquatsActivity;
@@ -271,6 +297,7 @@ export function useActivities() {
         time: null,
         feeling: null,
         duration: null,
+        steps: null,
       };
     } else if (updatedActivity.type === 'pushup') {
       const pushupActivity = updatedActivity as PushupActivity;
@@ -283,6 +310,7 @@ export function useActivities() {
         time: null,
         feeling: null,
         duration: null,
+        steps: null,
       };
     } else if (updatedActivity.type === 'plank') {
       const plankActivity = updatedActivity as PlankActivity;
@@ -295,6 +323,7 @@ export function useActivities() {
         feeling: null,
         reps: null,
         sets: null,
+        steps: null,
       };
     } else if (updatedActivity.type === 'swimming') {
       const swimActivity = updatedActivity as SwimmingActivity;
@@ -302,6 +331,20 @@ export function useActivities() {
         ...updateData,
         distance: swimActivity.distance,
         time: swimActivity.time,
+        name: null,
+        reps: null,
+        sets: null,
+        duration: null,
+        feeling: null,
+        steps: null,
+      };
+    } else if (updatedActivity.type === 'walking') {
+      const walkActivity = updatedActivity as WalkingActivity;
+      updateData = {
+        ...updateData,
+        distance: walkActivity.distance,
+        time: walkActivity.time,
+        steps: walkActivity.steps ?? null,
         name: null,
         reps: null,
         sets: null,
@@ -347,13 +390,15 @@ export function useActivities() {
       return isWithinInterval(activityDate, { start: monthStart, end: monthEnd });
     });
 
-    // Calculate total km (running + swimming converted)
+    // Calculate total km (running + swimming converted + walking)
     let totalKm = 0;
     thisMonthActivities.forEach(activity => {
       if (activity.type === 'running') {
         totalKm += activity.distance;
       } else if (activity.type === 'swimming') {
         totalKm += activity.distance / 1000; // meters to km
+      } else if (activity.type === 'walking') {
+        totalKm += activity.distance;
       }
     });
 

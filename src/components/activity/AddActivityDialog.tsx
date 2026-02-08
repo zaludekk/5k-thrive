@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity } from '@/types/activity';
-import { Plus, CalendarIcon, Waves } from 'lucide-react';
+import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity } from '@/types/activity';
+import { Plus, CalendarIcon, Waves, Footprints } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { FeelingSelector } from './FeelingSelector';
@@ -77,6 +77,20 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     editActivity?.type === 'swimming' ? (editActivity.time % 60).toString() : ''
   );
 
+  // Walking state
+  const [walkDistance, setWalkDistance] = useState(
+    editActivity?.type === 'walking' ? editActivity.distance.toString() : ''
+  );
+  const [walkMinutes, setWalkMinutes] = useState(
+    editActivity?.type === 'walking' ? Math.floor(editActivity.time / 60).toString() : ''
+  );
+  const [walkSeconds, setWalkSeconds] = useState(
+    editActivity?.type === 'walking' ? (editActivity.time % 60).toString() : ''
+  );
+  const [walkSteps, setWalkSteps] = useState(
+    editActivity?.type === 'walking' && editActivity.steps ? editActivity.steps.toString() : ''
+  );
+
   const resetForm = () => {
     setDate(new Date());
     setDistance('');
@@ -92,12 +106,16 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     setSwimDistance('');
     setSwimMinutes('');
     setSwimSeconds('');
+    setWalkDistance('');
+    setWalkMinutes('');
+    setWalkSeconds('');
+    setWalkSteps('');
   };
 
   const handleSubmit = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
-    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'>;
+    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'>;
     
     if (activeTab === 'running') {
       activityData = {
@@ -127,12 +145,20 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
         date: dateStr,
         duration: (parseInt(plankMinutes) || 0) * 60 + (parseInt(plankSeconds) || 0),
       };
-    } else {
+    } else if (activeTab === 'swimming') {
       activityData = {
         type: 'swimming' as const,
         date: dateStr,
         distance: parseInt(swimDistance) || 0,
         time: (parseInt(swimMinutes) || 0) * 60 + (parseInt(swimSeconds) || 0),
+      };
+    } else {
+      activityData = {
+        type: 'walking' as const,
+        date: dateStr,
+        distance: parseFloat(walkDistance) || 0,
+        time: (parseInt(walkMinutes) || 0) * 60 + (parseInt(walkSeconds) || 0),
+        steps: walkSteps ? parseInt(walkSteps) : undefined,
       };
     }
 
@@ -156,7 +182,7 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{editActivity ? 'Edit Activity' : 'Log New Activity'}</DialogTitle>
         </DialogHeader>
@@ -191,21 +217,24 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
 
           {/* Activity Type Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActivityType)}>
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="running" className="gap-1 text-xs px-1">
-                <span>🏃</span> Running
+                <span>🏃</span><span className="hidden sm:inline">Run</span>
+              </TabsTrigger>
+              <TabsTrigger value="walking" className="gap-1 text-xs px-1">
+                <Footprints className="h-3 w-3" /><span className="hidden sm:inline">Walk</span>
               </TabsTrigger>
               <TabsTrigger value="squats" className="gap-1 text-xs px-1">
-                <span>🏋️</span> Squats
+                <span>🏋️</span><span className="hidden sm:inline">Squat</span>
               </TabsTrigger>
               <TabsTrigger value="pushup" className="gap-1 text-xs px-1">
-                <span>💪</span> Push-Up
+                <span>💪</span><span className="hidden sm:inline">Push</span>
               </TabsTrigger>
               <TabsTrigger value="plank" className="gap-1 text-xs px-1">
-                <span>🧘</span> Plank
+                <span>🧘</span><span className="hidden sm:inline">Plank</span>
               </TabsTrigger>
               <TabsTrigger value="swimming" className="gap-1 text-xs px-1">
-                <Waves className="h-3 w-3" /> Swim
+                <Waves className="h-3 w-3" /><span className="hidden sm:inline">Swim</span>
               </TabsTrigger>
             </TabsList>
             
@@ -244,6 +273,49 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
               <div className="space-y-2">
                 <Label>How did you feel?</Label>
                 <FeelingSelector value={feeling} onChange={setFeeling} />
+              </div>
+            </TabsContent>
+
+            {/* Walking Form */}
+            <TabsContent value="walking" className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label>Distance (km)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  placeholder="e.g., 3.5"
+                  value={walkDistance}
+                  onChange={(e) => setWalkDistance(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Time</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={walkMinutes}
+                    onChange={(e) => setWalkMinutes(e.target.value)}
+                    className="w-20"
+                  />
+                  <span>:</span>
+                  <Input
+                    type="number"
+                    placeholder="Sec"
+                    value={walkSeconds}
+                    onChange={(e) => setWalkSeconds(e.target.value)}
+                    className="w-20"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Steps (optional)</Label>
+                <Input
+                  type="number"
+                  placeholder="e.g., 5000"
+                  value={walkSteps}
+                  onChange={(e) => setWalkSteps(e.target.value)}
+                />
               </div>
             </TabsContent>
 

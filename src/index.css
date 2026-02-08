@@ -46,6 +46,7 @@ All colors MUST be HSL.
     --running: 160 100% 50%;
     --strength: 280 100% 65%;
     --swimming: 200 100% 55%;
+    --walking: 35 100% 55%;
     --star: 45 100% 55%;
 
     /* Neon glow colors */
@@ -97,6 +98,7 @@ All colors MUST be HSL.
     --running: 160 100% 50%;
     --strength: 280 100% 65%;
     --swimming: 200 100% 55%;
+    --walking: 35 100% 55%;
     --star: 45 100% 55%;
 
     --neon-cyan: 180 100% 50%;

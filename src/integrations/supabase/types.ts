@@ -25,6 +25,7 @@ export type Database = {
           name: string | null
           reps: number | null
           sets: number | null
+          steps: number | null
           time: number | null
           type: string
           user_id: string | null
@@ -39,6 +40,7 @@ export type Database = {
           name?: string | null
           reps?: number | null
           sets?: number | null
+          steps?: number | null
           time?: number | null
           type: string
           user_id?: string | null
@@ -53,6 +55,7 @@ export type Database = {
           name?: string | null
           reps?: number | null
           sets?: number | null
+          steps?: number | null
           time?: number | null
           type?: string
           user_id?: string | null

@@ -73,6 +73,7 @@ const Index = () => {
           onUpdate={updateActivity}
           onDelete={deleteActivity}
         />
+
       </main>
 
       {/* Footer */}

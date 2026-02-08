@@ -1,4 +1,4 @@
-export type ActivityType = 'running' | 'squats' | 'pushup' | 'plank' | 'swimming';
+export type ActivityType = 'running' | 'squats' | 'pushup' | 'plank' | 'swimming' | 'walking';
 
 export interface BaseActivity {
   id: string;
@@ -37,7 +37,14 @@ export interface SwimmingActivity extends BaseActivity {
   time: number; // in seconds
 }
 
-export type Activity = RunningActivity | SquatsActivity | PushupActivity | PlankActivity | SwimmingActivity;
+export interface WalkingActivity extends BaseActivity {
+  type: 'walking';
+  distance: number; // in km
+  time: number; // in seconds
+  steps?: number;
+}
+
+export type Activity = RunningActivity | SquatsActivity | PushupActivity | PlankActivity | SwimmingActivity | WalkingActivity;
 
 export interface ActivityStats {
   totalKmThisMonth: number;

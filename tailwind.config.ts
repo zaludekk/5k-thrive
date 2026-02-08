@@ -51,6 +51,7 @@ export default {
         running: "hsl(var(--running))",
         strength: "hsl(var(--strength))",
         swimming: "hsl(var(--swimming))",
+        walking: "hsl(var(--walking))",
         star: "hsl(var(--star))",
         // Neon colors
         neon: {
