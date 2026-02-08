@@ -1,0 +1,1 @@
+ALTER TABLE public.activities ADD COLUMN steps integer;
