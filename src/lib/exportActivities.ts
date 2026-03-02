@@ -12,7 +12,7 @@ export function exportActivitiesToCSV(activities: Activity[]): void {
     return;
   }
 
-  const headers = ['Date', 'Type', 'Details', 'Distance', 'Time', 'Feeling', 'Sets', 'Reps', 'Duration', 'Steps'];
+  const headers = ['Date', 'Type', 'Details', 'Distance', 'Time', 'Feeling', 'Sets', 'Reps', 'Duration', 'Steps', 'Elevation Gain'];
   
   const rows = activities
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -25,40 +25,47 @@ export function exportActivitiesToCSV(activities: Activity[]): void {
             date, 'Running',
             `${activity.distance}km in ${formatTime(activity.time)}`,
             `${activity.distance} km`, formatTime(activity.time),
-            activity.feeling.toString(), '', '', '', ''
+            activity.feeling.toString(), '', '', '', '', ''
           ];
         case 'squats':
           return [
             date, 'Squats',
             activity.sets && activity.reps ? `${activity.sets}x${activity.reps}` : 'Squats',
             '', '', '',
-            activity.sets?.toString() || '', activity.reps?.toString() || '', '', ''
+            activity.sets?.toString() || '', activity.reps?.toString() || '', '', '', ''
           ];
         case 'pushup':
           return [
             date, 'Push-Up',
             activity.sets && activity.reps ? `${activity.sets}x${activity.reps}` : 'Push-Up',
             '', '', '',
-            activity.sets?.toString() || '', activity.reps?.toString() || '', '', ''
+            activity.sets?.toString() || '', activity.reps?.toString() || '', '', '', ''
           ];
         case 'plank':
           return [
             date, 'Plank', `${formatTime(activity.duration)}`,
-            '', '', '', '', '', formatTime(activity.duration), ''
+            '', '', '', '', '', formatTime(activity.duration), '', ''
           ];
         case 'swimming':
           return [
             date, 'Swimming',
             `${activity.distance}m in ${formatTime(activity.time)}`,
             `${activity.distance} m`, formatTime(activity.time),
-            '', '', '', '', ''
+            '', '', '', '', '', ''
           ];
         case 'walking':
           return [
             date, 'Walking',
             `${activity.distance}km in ${formatTime(activity.time)}`,
             `${activity.distance} km`, formatTime(activity.time),
-            '', '', '', '', activity.steps?.toString() || ''
+            '', '', '', '', activity.steps?.toString() || '', ''
+          ];
+        case 'cycling':
+          return [
+            date, 'Cycling',
+            `${activity.distance}km in ${formatTime(activity.duration)}`,
+            `${activity.distance} km`, formatTime(activity.duration),
+            '', '', '', '', '', activity.elevationGain?.toString() || ''
           ];
       }
     });

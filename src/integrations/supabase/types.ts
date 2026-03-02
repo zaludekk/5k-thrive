@@ -20,6 +20,7 @@ export type Database = {
           date: string
           distance: number | null
           duration: number | null
+          elevation_gain: number | null
           feeling: number | null
           id: string
           name: string | null
@@ -35,6 +36,7 @@ export type Database = {
           date: string
           distance?: number | null
           duration?: number | null
+          elevation_gain?: number | null
           feeling?: number | null
           id?: string
           name?: string | null
@@ -50,6 +52,7 @@ export type Database = {
           date?: string
           distance?: number | null
           duration?: number | null
+          elevation_gain?: number | null
           feeling?: number | null
           id?: string
           name?: string | null

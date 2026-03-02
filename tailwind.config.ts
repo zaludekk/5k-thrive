@@ -52,6 +52,7 @@ export default {
         strength: "hsl(var(--strength))",
         swimming: "hsl(var(--swimming))",
         walking: "hsl(var(--walking))",
+        cycling: "hsl(var(--cycling))",
         star: "hsl(var(--star))",
         // Neon colors
         neon: {
@@ -60,6 +61,7 @@ export default {
           green: "hsl(var(--neon-green))",
           orange: "hsl(var(--neon-orange))",
           pink: "hsl(var(--neon-pink))",
+          yellow: "hsl(var(--neon-yellow))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

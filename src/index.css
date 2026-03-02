@@ -47,6 +47,7 @@ All colors MUST be HSL.
     --strength: 280 100% 65%;
     --swimming: 200 100% 55%;
     --walking: 35 100% 55%;
+    --cycling: 55 100% 50%;
     --star: 45 100% 55%;
 
     /* Neon glow colors */
@@ -55,7 +56,7 @@ All colors MUST be HSL.
     --neon-green: 160 100% 50%;
     --neon-orange: 25 100% 55%;
     --neon-pink: 330 100% 65%;
-
+    --neon-yellow: 55 100% 50%;
     --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 96%;
     --sidebar-primary: 180 100% 50%;
@@ -99,6 +100,7 @@ All colors MUST be HSL.
     --strength: 280 100% 65%;
     --swimming: 200 100% 55%;
     --walking: 35 100% 55%;
+    --cycling: 55 100% 50%;
     --star: 45 100% 55%;
 
     --neon-cyan: 180 100% 50%;
@@ -106,6 +108,7 @@ All colors MUST be HSL.
     --neon-green: 160 100% 50%;
     --neon-orange: 25 100% 55%;
     --neon-pink: 330 100% 65%;
+    --neon-yellow: 55 100% 50%;
 
     --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 210 40% 96%;
