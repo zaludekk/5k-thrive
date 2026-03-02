@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity } from '@/types/activity';
-import { Plus, CalendarIcon, Waves, Footprints } from 'lucide-react';
+import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
+import { Plus, CalendarIcon, Waves, Footprints, Bike } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { FeelingSelector } from './FeelingSelector';
@@ -91,6 +91,20 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     editActivity?.type === 'walking' && editActivity.steps ? editActivity.steps.toString() : ''
   );
 
+  // Cycling state
+  const [cycleDistance, setCycleDistance] = useState(
+    editActivity?.type === 'cycling' ? editActivity.distance.toString() : ''
+  );
+  const [cycleMinutes, setCycleMinutes] = useState(
+    editActivity?.type === 'cycling' ? Math.floor(editActivity.duration / 60).toString() : ''
+  );
+  const [cycleSeconds, setCycleSeconds] = useState(
+    editActivity?.type === 'cycling' ? (editActivity.duration % 60).toString() : ''
+  );
+  const [cycleElevation, setCycleElevation] = useState(
+    editActivity?.type === 'cycling' && editActivity.elevationGain ? editActivity.elevationGain.toString() : ''
+  );
+
   const resetForm = () => {
     setDate(new Date());
     setDistance('');
@@ -110,12 +124,16 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     setWalkMinutes('');
     setWalkSeconds('');
     setWalkSteps('');
+    setCycleDistance('');
+    setCycleMinutes('');
+    setCycleSeconds('');
+    setCycleElevation('');
   };
 
   const handleSubmit = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
-    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'>;
+    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'> | Omit<CyclingActivity, 'id' | 'createdAt'>;
     
     if (activeTab === 'running') {
       activityData = {
@@ -152,13 +170,21 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
         distance: parseInt(swimDistance) || 0,
         time: (parseInt(swimMinutes) || 0) * 60 + (parseInt(swimSeconds) || 0),
       };
-    } else {
+    } else if (activeTab === 'walking') {
       activityData = {
         type: 'walking' as const,
         date: dateStr,
         distance: parseFloat(walkDistance) || 0,
         time: (parseInt(walkMinutes) || 0) * 60 + (parseInt(walkSeconds) || 0),
         steps: walkSteps ? parseInt(walkSteps) : undefined,
+      };
+    } else {
+      activityData = {
+        type: 'cycling' as const,
+        date: dateStr,
+        distance: parseFloat(cycleDistance) || 0,
+        duration: (parseInt(cycleMinutes) || 0) * 60 + (parseInt(cycleSeconds) || 0),
+        elevationGain: cycleElevation ? parseInt(cycleElevation) : undefined,
       };
     }
 
@@ -217,12 +243,15 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
 
           {/* Activity Type Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActivityType)}>
-            <TabsList className="grid w-full grid-cols-6">
+            <TabsList className="grid w-full grid-cols-7">
               <TabsTrigger value="running" className="gap-1 text-xs px-1">
                 <span>🏃</span><span className="hidden sm:inline">Run</span>
               </TabsTrigger>
               <TabsTrigger value="walking" className="gap-1 text-xs px-1">
                 <Footprints className="h-3 w-3" /><span className="hidden sm:inline">Walk</span>
+              </TabsTrigger>
+              <TabsTrigger value="cycling" className="gap-1 text-xs px-1">
+                <Bike className="h-3 w-3" /><span className="hidden sm:inline">Bike</span>
               </TabsTrigger>
               <TabsTrigger value="squats" className="gap-1 text-xs px-1">
                 <span>🏋️</span><span className="hidden sm:inline">Squat</span>
@@ -421,6 +450,49 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
                     className="w-20"
                   />
                 </div>
+              </div>
+            </TabsContent>
+
+            {/* Cycling Form */}
+            <TabsContent value="cycling" className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label>Distance (km)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  placeholder="e.g., 25.0"
+                  value={cycleDistance}
+                  onChange={(e) => setCycleDistance(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Duration</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={cycleMinutes}
+                    onChange={(e) => setCycleMinutes(e.target.value)}
+                    className="w-20"
+                  />
+                  <span>:</span>
+                  <Input
+                    type="number"
+                    placeholder="Sec"
+                    value={cycleSeconds}
+                    onChange={(e) => setCycleSeconds(e.target.value)}
+                    className="w-20"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Elevation Gain (m, optional)</Label>
+                <Input
+                  type="number"
+                  placeholder="e.g., 350"
+                  value={cycleElevation}
+                  onChange={(e) => setCycleElevation(e.target.value)}
+                />
               </div>
             </TabsContent>
           </Tabs>

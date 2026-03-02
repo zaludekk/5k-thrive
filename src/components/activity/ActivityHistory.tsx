@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity } from '@/types/activity';
+import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
 import { AddActivityDialog } from './AddActivityDialog';
 import { StrengthMetrics } from './StrengthMetrics';
 import { WalkingChallenge } from '@/components/dashboard/WalkingChallenge';
+import { CyclingChallenge } from '@/components/dashboard/CyclingChallenge';
 import { ActivityStatBlock } from './ActivityStatBlock';
 import { format, parseISO } from 'date-fns';
-import { Pencil, Trash2, Waves, Star, History, Footprints } from 'lucide-react';
+import { Pencil, Trash2, Waves, Star, History, Footprints, Bike } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
@@ -47,6 +48,8 @@ function ActivityIcon({ type }: { type: Activity['type'] }) {
       return <Waves className="h-4 w-4 text-swimming" />;
     case 'walking':
       return <Footprints className="h-4 w-4 text-walking" />;
+    case 'cycling':
+      return <Bike className="h-4 w-4 text-cycling" />;
   }
 }
 
@@ -126,6 +129,20 @@ function ActivityDetails({ activity }: { activity: Activity }) {
           )}
         </div>
       );
+    case 'cycling':
+      return (
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">{activity.distance} km</span>
+          <span>•</span>
+          <span>{formatTime(activity.duration)}</span>
+          {activity.elevationGain && (
+            <>
+              <span>•</span>
+              <span>↑{activity.elevationGain}m</span>
+            </>
+          )}
+        </div>
+      );
   }
 }
 
@@ -153,6 +170,8 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
         return 'border-l-swimming';
       case 'walking':
         return 'border-l-walking';
+      case 'cycling':
+        return 'border-l-cycling';
     }
   };
 
@@ -172,6 +191,9 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
 
       {/* Walking Challenge - Road to Paris */}
       <WalkingChallenge activities={activities} />
+
+      {/* Cycling Challenge - Ride to Rome */}
+      <CyclingChallenge activities={activities} />
 
       {/* Strength Activities as Stat Blocks */}
       {strengthActivities.length > 0 && (

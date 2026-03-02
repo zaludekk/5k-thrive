@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity } from '@/types/activity';
+import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
@@ -18,6 +18,7 @@ type ActivityInsert = {
   sets?: number | null;
   duration?: number | null;
   steps?: number | null;
+  elevation_gain?: number | null;
   user_id?: string | null;
 };
 
@@ -88,6 +89,14 @@ export function useActivities() {
                 distance: walkActivity.distance,
                 time: walkActivity.time,
                 steps: walkActivity.steps,
+              };
+            } else if (activity.type === 'cycling') {
+              const cycleActivity = activity as CyclingActivity;
+              insertData = {
+                ...baseData,
+                distance: cycleActivity.distance,
+                duration: cycleActivity.duration,
+                elevation_gain: cycleActivity.elevationGain,
               };
             }
 
@@ -164,6 +173,14 @@ export function useActivities() {
             distance: Number(record.distance),
             time: record.time || 0,
             steps: record.steps ?? undefined,
+          };
+        } else if (record.type === 'cycling') {
+          return {
+            ...baseActivity,
+            type: 'cycling' as const,
+            distance: Number(record.distance),
+            duration: record.duration || 0,
+            elevationGain: record.elevation_gain ?? undefined,
           };
         } else {
           // Fallback for unknown strength activities - treat as squats
@@ -251,6 +268,14 @@ export function useActivities() {
         distance: walkActivity.distance,
         time: walkActivity.time,
         steps: walkActivity.steps,
+      };
+    } else if (activity.type === 'cycling') {
+      const cycleActivity = activity as Omit<CyclingActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        distance: cycleActivity.distance,
+        duration: cycleActivity.duration,
+        elevation_gain: cycleActivity.elevationGain,
       };
     }
 
@@ -350,6 +375,21 @@ export function useActivities() {
         sets: null,
         duration: null,
         feeling: null,
+        elevation_gain: null,
+      };
+    } else if (updatedActivity.type === 'cycling') {
+      const cycleActivity = updatedActivity as CyclingActivity;
+      updateData = {
+        ...updateData,
+        distance: cycleActivity.distance,
+        duration: cycleActivity.duration,
+        elevation_gain: cycleActivity.elevationGain ?? null,
+        name: null,
+        reps: null,
+        sets: null,
+        time: null,
+        feeling: null,
+        steps: null,
       };
     }
 
@@ -398,6 +438,8 @@ export function useActivities() {
       } else if (activity.type === 'swimming') {
         totalKm += activity.distance / 1000; // meters to km
       } else if (activity.type === 'walking') {
+        totalKm += activity.distance;
+      } else if (activity.type === 'cycling') {
         totalKm += activity.distance;
       }
     });
