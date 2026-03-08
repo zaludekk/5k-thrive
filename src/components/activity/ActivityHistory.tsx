@@ -8,7 +8,7 @@ import { WalkingChallenge } from '@/components/dashboard/WalkingChallenge';
 import { CyclingChallenge } from '@/components/dashboard/CyclingChallenge';
 import { ActivityStatBlock } from './ActivityStatBlock';
 import { format, parseISO } from 'date-fns';
-import { Pencil, Trash2, Waves, Star, History, Footprints, Bike } from 'lucide-react';
+import { Pencil, Trash2, Waves, Star, History, Footprints, Bike, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
