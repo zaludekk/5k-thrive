@@ -70,6 +70,23 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container max-w-4xl mx-auto px-4 py-6 space-y-6">
+        {/* Month Picker */}
+        <Card className="glass-panel border-neon-cyan/20">
+          <CardContent className="py-3 px-4">
+            <div className="flex items-center justify-center gap-4">
+              <Button variant="ghost" size="icon" onClick={goToPrevMonth} className="text-muted-foreground hover:text-neon-cyan">
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <span className="text-lg font-bold text-neon-cyan neon-text-cyan uppercase tracking-widest min-w-[180px] text-center">
+                {format(selectedDate, 'LLLL yyyy', { locale: cs })}
+              </span>
+              <Button variant="ghost" size="icon" onClick={goToNextMonth} disabled={isCurrentMonth} className="text-muted-foreground hover:text-neon-cyan disabled:opacity-30">
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Stats Overview */}
         <StatsCards stats={stats} />
 
