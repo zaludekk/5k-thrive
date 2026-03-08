@@ -136,6 +136,8 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     setCycleMinutes('');
     setCycleSeconds('');
     setCycleElevation('');
+    setGripReps('');
+    setGripSets('');
   };
 
   const handleSubmit = () => {
