@@ -435,12 +435,6 @@ export function useActivities() {
     thisMonthActivities.forEach(activity => {
       if (activity.type === 'running') {
         totalKm += activity.distance;
-      } else if (activity.type === 'swimming') {
-        totalKm += activity.distance / 1000; // meters to km
-      } else if (activity.type === 'walking') {
-        totalKm += activity.distance;
-      } else if (activity.type === 'cycling') {
-        totalKm += activity.distance;
       }
     });
 
