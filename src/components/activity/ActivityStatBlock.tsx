@@ -21,6 +21,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const getIcon = () => {
     if (isSquats) return <Mountain className="h-5 w-5" />;
     if (isPushup) return <Dumbbell className="h-5 w-5" />;
+    if (isGrip) return <Repeat className="h-5 w-5" />;
     return <Clock className="h-5 w-5" />;
   };
 
