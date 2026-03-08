@@ -94,7 +94,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
       {/* Main Stats */}
       <div className="flex-1 min-w-0">
         <h4 className={cn("font-semibold text-sm mb-1", getAccentColor())}>
-          {isSquats ? 'Squats' : isPushup ? 'Push-Ups' : 'Plank'}
+          {isSquats ? 'Squats' : isPushup ? 'Push-Ups' : isGrip ? 'Zápěstí' : 'Plank'}
         </h4>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           {(isSquats || isPushup) && activity.reps && activity.sets && (
