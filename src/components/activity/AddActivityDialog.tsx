@@ -282,6 +282,9 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
               <TabsTrigger value="swimming" className="gap-1 text-xs px-1">
                 <Waves className="h-3 w-3" /><span className="hidden sm:inline">Swim</span>
               </TabsTrigger>
+              <TabsTrigger value="grip" className="gap-1 text-xs px-1">
+                <Circle className="h-3 w-3" /><span className="hidden sm:inline">Grip</span>
+              </TabsTrigger>
             </TabsList>
             
             {/* Running Form */}
