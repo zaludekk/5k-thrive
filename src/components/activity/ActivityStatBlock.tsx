@@ -42,6 +42,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const getAccentColor = () => {
     if (isSquats) return 'text-neon-green';
     if (isPushup) return 'text-neon-purple';
+    if (isGrip) return 'text-neon-cyan';
     return 'text-neon-orange';
   };
 
