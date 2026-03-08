@@ -179,6 +179,7 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
       case 'squats':
       case 'pushup':
       case 'plank':
+      case 'grip':
         return 'border-l-strength';
       case 'swimming':
         return 'border-l-swimming';
