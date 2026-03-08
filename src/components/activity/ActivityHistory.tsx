@@ -145,6 +145,18 @@ function ActivityDetails({ activity }: { activity: Activity }) {
           )}
         </div>
       );
+    case 'grip':
+      return (
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">Zápěstí</span>
+          {activity.reps && activity.sets && (
+            <>
+              <span>•</span>
+              <span>{activity.sets}×{activity.reps} stisků</span>
+            </>
+          )}
+        </div>
+      );
   }
 }
 
