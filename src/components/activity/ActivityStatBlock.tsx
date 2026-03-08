@@ -1,9 +1,9 @@
 import { Mountain, Dumbbell, Clock, Repeat, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SquatsActivity, PushupActivity, PlankActivity } from '@/types/activity';
+import { SquatsActivity, PushupActivity, PlankActivity, GripActivity } from '@/types/activity';
 
 interface ActivityStatBlockProps {
-  activity: SquatsActivity | PushupActivity | PlankActivity;
+  activity: SquatsActivity | PushupActivity | PlankActivity | GripActivity;
 }
 
 function formatTime(seconds: number): string {
