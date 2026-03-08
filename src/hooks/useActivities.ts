@@ -98,6 +98,14 @@ export function useActivities() {
                 duration: cycleActivity.duration,
                 elevation_gain: cycleActivity.elevationGain,
               };
+            } else if (activity.type === 'grip') {
+              const gripActivity = activity as GripActivity;
+              insertData = {
+                ...baseData,
+                name: 'Grip',
+                reps: gripActivity.reps,
+                sets: gripActivity.sets,
+              };
             }
 
             await supabase.from('activities').upsert(insertData);
