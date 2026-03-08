@@ -188,13 +188,20 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
         time: (parseInt(walkMinutes) || 0) * 60 + (parseInt(walkSeconds) || 0),
         steps: walkSteps ? parseInt(walkSteps) : undefined,
       };
-    } else {
+    } else if (activeTab === 'cycling') {
       activityData = {
         type: 'cycling' as const,
         date: dateStr,
         distance: parseFloat(cycleDistance) || 0,
         duration: (parseInt(cycleMinutes) || 0) * 60 + (parseInt(cycleSeconds) || 0),
         elevationGain: cycleElevation ? parseInt(cycleElevation) : undefined,
+      };
+    } else {
+      activityData = {
+        type: 'grip' as const,
+        date: dateStr,
+        reps: gripReps ? parseInt(gripReps) : undefined,
+        sets: gripSets ? parseInt(gripSets) : undefined,
       };
     }
 
