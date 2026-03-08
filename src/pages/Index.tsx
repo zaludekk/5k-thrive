@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useActivities } from '@/hooks/useActivities';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { GoalProgress } from '@/components/dashboard/GoalProgress';
@@ -7,11 +8,25 @@ import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
+import { Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { exportActivitiesToCSV } from '@/lib/exportActivities';
+import { format } from 'date-fns';
+import { cs } from 'date-fns/locale';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Index = () => {
   const { activities, isLoading, addActivity, updateActivity, deleteActivity, getStats } = useActivities();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const goToPrevMonth = () => {
+    setSelectedDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+
+  const goToNextMonth = () => {
+    setSelectedDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const isCurrentMonth = selectedDate.getMonth() === new Date().getMonth() && selectedDate.getFullYear() === new Date().getFullYear();
   
   if (isLoading) {
     return (
@@ -21,7 +36,7 @@ const Index = () => {
     );
   }
 
-  const stats = getStats();
+  const stats = getStats(selectedDate);
 
   const handleAddActivity = (activity: Omit<Activity, 'id' | 'createdAt'>) => {
     addActivity(activity);

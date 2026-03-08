@@ -420,10 +420,10 @@ export function useActivities() {
     await fetchActivities();
   }, [fetchActivities]);
 
-  const getStats = useCallback((): ActivityStats => {
-    const now = new Date();
-    const monthStart = startOfMonth(now);
-    const monthEnd = endOfMonth(now);
+  const getStats = useCallback((selectedDate?: Date): ActivityStats => {
+    const target = selectedDate || new Date();
+    const monthStart = startOfMonth(target);
+    const monthEnd = endOfMonth(target);
 
     const thisMonthActivities = activities.filter(activity => {
       const activityDate = parseISO(activity.date);
