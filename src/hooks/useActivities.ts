@@ -190,6 +190,13 @@ export function useActivities() {
             duration: record.duration || 0,
             elevationGain: record.elevation_gain ?? undefined,
           };
+        } else if (record.type === 'grip') {
+          return {
+            ...baseActivity,
+            type: 'grip' as const,
+            reps: record.reps ?? undefined,
+            sets: record.sets ?? undefined,
+          };
         } else {
           // Fallback for unknown strength activities - treat as squats
           return {
