@@ -50,6 +50,8 @@ function ActivityIcon({ type }: { type: Activity['type'] }) {
       return <Footprints className="h-4 w-4 text-walking" />;
     case 'cycling':
       return <Bike className="h-4 w-4 text-cycling" />;
+    case 'grip':
+      return <Circle className="h-4 w-4 text-strength" />;
   }
 }
 
