@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
+import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity, GripActivity } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
@@ -98,6 +98,14 @@ export function useActivities() {
                 duration: cycleActivity.duration,
                 elevation_gain: cycleActivity.elevationGain,
               };
+            } else if (activity.type === 'grip') {
+              const gripActivity = activity as GripActivity;
+              insertData = {
+                ...baseData,
+                name: 'Grip',
+                reps: gripActivity.reps,
+                sets: gripActivity.sets,
+              };
             }
 
             await supabase.from('activities').upsert(insertData);
@@ -181,6 +189,13 @@ export function useActivities() {
             distance: Number(record.distance),
             duration: record.duration || 0,
             elevationGain: record.elevation_gain ?? undefined,
+          };
+        } else if (record.type === 'grip') {
+          return {
+            ...baseActivity,
+            type: 'grip' as const,
+            reps: record.reps ?? undefined,
+            sets: record.sets ?? undefined,
           };
         } else {
           // Fallback for unknown strength activities - treat as squats
@@ -276,6 +291,14 @@ export function useActivities() {
         distance: cycleActivity.distance,
         duration: cycleActivity.duration,
         elevation_gain: cycleActivity.elevationGain,
+      };
+    } else if (activity.type === 'grip') {
+      const gripActivity = activity as Omit<GripActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        name: 'Grip',
+        reps: gripActivity.reps,
+        sets: gripActivity.sets,
       };
     }
 
@@ -390,6 +413,20 @@ export function useActivities() {
         time: null,
         feeling: null,
         steps: null,
+      };
+    } else if (updatedActivity.type === 'grip') {
+      const gripActivity = updatedActivity as GripActivity;
+      updateData = {
+        ...updateData,
+        name: 'Grip',
+        reps: gripActivity.reps,
+        sets: gripActivity.sets,
+        distance: null,
+        time: null,
+        feeling: null,
+        duration: null,
+        steps: null,
+        elevation_gain: null,
       };
     }
 

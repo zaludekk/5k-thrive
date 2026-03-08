@@ -6,8 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
-import { Plus, CalendarIcon, Waves, Footprints, Bike } from 'lucide-react';
+import { Activity, ActivityType, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity, GripActivity } from '@/types/activity';
+import { Plus, CalendarIcon, Waves, Footprints, Bike, Circle } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { FeelingSelector } from './FeelingSelector';
@@ -105,6 +105,14 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     editActivity?.type === 'cycling' && editActivity.elevationGain ? editActivity.elevationGain.toString() : ''
   );
 
+  // Grip state
+  const [gripReps, setGripReps] = useState(
+    editActivity?.type === 'grip' && editActivity.reps ? editActivity.reps.toString() : ''
+  );
+  const [gripSets, setGripSets] = useState(
+    editActivity?.type === 'grip' && editActivity.sets ? editActivity.sets.toString() : ''
+  );
+
   const resetForm = () => {
     setDate(new Date());
     setDistance('');
@@ -128,12 +136,14 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     setCycleMinutes('');
     setCycleSeconds('');
     setCycleElevation('');
+    setGripReps('');
+    setGripSets('');
   };
 
   const handleSubmit = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
-    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'> | Omit<CyclingActivity, 'id' | 'createdAt'>;
+    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'> | Omit<CyclingActivity, 'id' | 'createdAt'> | Omit<GripActivity, 'id' | 'createdAt'>;
     
     if (activeTab === 'running') {
       activityData = {
@@ -178,13 +188,20 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
         time: (parseInt(walkMinutes) || 0) * 60 + (parseInt(walkSeconds) || 0),
         steps: walkSteps ? parseInt(walkSteps) : undefined,
       };
-    } else {
+    } else if (activeTab === 'cycling') {
       activityData = {
         type: 'cycling' as const,
         date: dateStr,
         distance: parseFloat(cycleDistance) || 0,
         duration: (parseInt(cycleMinutes) || 0) * 60 + (parseInt(cycleSeconds) || 0),
         elevationGain: cycleElevation ? parseInt(cycleElevation) : undefined,
+      };
+    } else {
+      activityData = {
+        type: 'grip' as const,
+        date: dateStr,
+        reps: gripReps ? parseInt(gripReps) : undefined,
+        sets: gripSets ? parseInt(gripSets) : undefined,
       };
     }
 
@@ -243,7 +260,7 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
 
           {/* Activity Type Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActivityType)}>
-            <TabsList className="grid w-full grid-cols-7">
+            <TabsList className="grid w-full grid-cols-8">
               <TabsTrigger value="running" className="gap-1 text-xs px-1">
                 <span>🏃</span><span className="hidden sm:inline">Run</span>
               </TabsTrigger>
@@ -264,6 +281,9 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
               </TabsTrigger>
               <TabsTrigger value="swimming" className="gap-1 text-xs px-1">
                 <Waves className="h-3 w-3" /><span className="hidden sm:inline">Swim</span>
+              </TabsTrigger>
+              <TabsTrigger value="grip" className="gap-1 text-xs px-1">
+                <Circle className="h-3 w-3" /><span className="hidden sm:inline">Grip</span>
               </TabsTrigger>
             </TabsList>
             
@@ -493,6 +513,30 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
                   value={cycleElevation}
                   onChange={(e) => setCycleElevation(e.target.value)}
                 />
+              </div>
+            </TabsContent>
+
+            {/* Grip Form */}
+            <TabsContent value="grip" className="space-y-4 pt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Reps (stisků)</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 20"
+                    value={gripReps}
+                    onChange={(e) => setGripReps(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Sets (série)</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 3"
+                    value={gripSets}
+                    onChange={(e) => setGripSets(e.target.value)}
+                  />
+                </div>
               </div>
             </TabsContent>
           </Tabs>

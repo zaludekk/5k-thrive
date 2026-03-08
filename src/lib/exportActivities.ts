@@ -67,6 +67,13 @@ export function exportActivitiesToCSV(activities: Activity[]): void {
             `${activity.distance} km`, formatTime(activity.duration),
             '', '', '', '', '', activity.elevationGain?.toString() || ''
           ];
+        case 'grip':
+          return [
+            date, 'Grip',
+            activity.sets && activity.reps ? `${activity.sets}x${activity.reps}` : 'Grip',
+            '', '', '',
+            activity.sets?.toString() || '', activity.reps?.toString() || '', '', '', ''
+          ];
       }
     });
 

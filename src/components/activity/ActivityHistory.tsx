@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
+import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity, CyclingActivity, GripActivity } from '@/types/activity';
 import { AddActivityDialog } from './AddActivityDialog';
 import { StrengthMetrics } from './StrengthMetrics';
 import { WalkingChallenge } from '@/components/dashboard/WalkingChallenge';
 import { CyclingChallenge } from '@/components/dashboard/CyclingChallenge';
 import { ActivityStatBlock } from './ActivityStatBlock';
 import { format, parseISO } from 'date-fns';
-import { Pencil, Trash2, Waves, Star, History, Footprints, Bike } from 'lucide-react';
+import { Pencil, Trash2, Waves, Star, History, Footprints, Bike, Circle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
@@ -50,6 +50,8 @@ function ActivityIcon({ type }: { type: Activity['type'] }) {
       return <Footprints className="h-4 w-4 text-walking" />;
     case 'cycling':
       return <Bike className="h-4 w-4 text-cycling" />;
+    case 'grip':
+      return <Circle className="h-4 w-4 text-strength" />;
   }
 }
 
@@ -143,6 +145,18 @@ function ActivityDetails({ activity }: { activity: Activity }) {
           )}
         </div>
       );
+    case 'grip':
+      return (
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">Zápěstí</span>
+          {activity.reps && activity.sets && (
+            <>
+              <span>•</span>
+              <span>{activity.sets}×{activity.reps} stisků</span>
+            </>
+          )}
+        </div>
+      );
   }
 }
 
@@ -165,6 +179,7 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
       case 'squats':
       case 'pushup':
       case 'plank':
+      case 'grip':
         return 'border-l-strength';
       case 'swimming':
         return 'border-l-swimming';
@@ -177,11 +192,11 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
 
   // Separate strength activities for stat blocks
   const strengthActivities = sortedActivities.filter(
-    a => a.type === 'squats' || a.type === 'pushup' || a.type === 'plank'
-  ) as (SquatsActivity | PushupActivity | PlankActivity)[];
+    a => a.type === 'squats' || a.type === 'pushup' || a.type === 'plank' || a.type === 'grip'
+  ) as (SquatsActivity | PushupActivity | PlankActivity | GripActivity)[];
   
   const otherActivities = sortedActivities.filter(
-    a => a.type !== 'squats' && a.type !== 'pushup' && a.type !== 'plank'
+    a => a.type !== 'squats' && a.type !== 'pushup' && a.type !== 'plank' && a.type !== 'grip'
   );
 
   return (

@@ -1,9 +1,9 @@
 import { Mountain, Dumbbell, Clock, Repeat, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { SquatsActivity, PushupActivity, PlankActivity } from '@/types/activity';
+import { SquatsActivity, PushupActivity, PlankActivity, GripActivity } from '@/types/activity';
 
 interface ActivityStatBlockProps {
-  activity: SquatsActivity | PushupActivity | PlankActivity;
+  activity: SquatsActivity | PushupActivity | PlankActivity | GripActivity;
 }
 
 function formatTime(seconds: number): string {
@@ -16,28 +16,33 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const isSquats = activity.type === 'squats';
   const isPushup = activity.type === 'pushup';
   const isPlank = activity.type === 'plank';
+  const isGrip = activity.type === 'grip';
 
   const getIcon = () => {
     if (isSquats) return <Mountain className="h-5 w-5" />;
     if (isPushup) return <Dumbbell className="h-5 w-5" />;
+    if (isGrip) return <Repeat className="h-5 w-5" />;
     return <Clock className="h-5 w-5" />;
   };
 
   const getGradientClass = () => {
     if (isSquats) return 'from-neon-green/20 to-neon-cyan/10 border-neon-green/40';
     if (isPushup) return 'from-neon-purple/20 to-neon-pink/10 border-neon-purple/40';
+    if (isGrip) return 'from-neon-cyan/20 to-neon-green/10 border-neon-cyan/40';
     return 'from-neon-orange/20 to-neon-pink/10 border-neon-orange/40';
   };
 
   const getIconBgClass = () => {
     if (isSquats) return 'bg-neon-green/20 text-neon-green';
     if (isPushup) return 'bg-neon-purple/20 text-neon-purple';
+    if (isGrip) return 'bg-neon-cyan/20 text-neon-cyan';
     return 'bg-neon-orange/20 text-neon-orange';
   };
 
   const getAccentColor = () => {
     if (isSquats) return 'text-neon-green';
     if (isPushup) return 'text-neon-purple';
+    if (isGrip) return 'text-neon-cyan';
     return 'text-neon-orange';
   };
 
@@ -89,10 +94,10 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
       {/* Main Stats */}
       <div className="flex-1 min-w-0">
         <h4 className={cn("font-semibold text-sm mb-1", getAccentColor())}>
-          {isSquats ? 'Squats' : isPushup ? 'Push-Ups' : 'Plank'}
+          {isSquats ? 'Squats' : isPushup ? 'Push-Ups' : isGrip ? 'Zápěstí' : 'Plank'}
         </h4>
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          {(isSquats || isPushup) && activity.reps && activity.sets && (
+          {(isSquats || isPushup || isGrip) && activity.reps && activity.sets && (
             <>
               <div className="flex items-center gap-1.5">
                 <Layers className="h-3.5 w-3.5 text-muted-foreground" />
