@@ -105,6 +105,14 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
     editActivity?.type === 'cycling' && editActivity.elevationGain ? editActivity.elevationGain.toString() : ''
   );
 
+  // Grip state
+  const [gripReps, setGripReps] = useState(
+    editActivity?.type === 'grip' && editActivity.reps ? editActivity.reps.toString() : ''
+  );
+  const [gripSets, setGripSets] = useState(
+    editActivity?.type === 'grip' && editActivity.sets ? editActivity.sets.toString() : ''
+  );
+
   const resetForm = () => {
     setDate(new Date());
     setDistance('');
