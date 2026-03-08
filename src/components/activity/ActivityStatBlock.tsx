@@ -16,6 +16,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const isSquats = activity.type === 'squats';
   const isPushup = activity.type === 'pushup';
   const isPlank = activity.type === 'plank';
+  const isGrip = activity.type === 'grip';
 
   const getIcon = () => {
     if (isSquats) return <Mountain className="h-5 w-5" />;
