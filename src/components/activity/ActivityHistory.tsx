@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
+import { Activity, SquatsActivity, PushupActivity, PlankActivity, WalkingActivity, CyclingActivity, GripActivity } from '@/types/activity';
 import { AddActivityDialog } from './AddActivityDialog';
 import { StrengthMetrics } from './StrengthMetrics';
 import { WalkingChallenge } from '@/components/dashboard/WalkingChallenge';
