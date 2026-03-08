@@ -54,7 +54,8 @@ export interface CyclingActivity extends BaseActivity {
 export type Activity = RunningActivity | SquatsActivity | PushupActivity | PlankActivity | SwimmingActivity | WalkingActivity | CyclingActivity;
 
 export interface ActivityStats {
-  totalKmThisMonth: number;
+  totalRunningKmThisMonth: number;
+  totalAllKmThisMonth: number;
   totalActivitiesThisMonth: number;
   best5KTime: number | null; // in seconds
 }

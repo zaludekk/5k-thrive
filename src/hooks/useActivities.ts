@@ -430,15 +430,21 @@ export function useActivities() {
       return isWithinInterval(activityDate, { start: monthStart, end: monthEnd });
     });
 
-    // Calculate total km (running + swimming converted + walking)
-    let totalKm = 0;
+    let totalRunningKm = 0;
+    let totalAllKm = 0;
     thisMonthActivities.forEach(activity => {
       if (activity.type === 'running') {
-        totalKm += activity.distance;
+        totalRunningKm += activity.distance;
+        totalAllKm += activity.distance;
+      } else if (activity.type === 'swimming') {
+        totalAllKm += activity.distance / 1000;
+      } else if (activity.type === 'walking') {
+        totalAllKm += activity.distance;
+      } else if (activity.type === 'cycling') {
+        totalAllKm += activity.distance;
       }
     });
 
-    // Find best 5K time (runs between 4.9km and 5.1km)
     const fiveKRuns = activities.filter(
       activity => activity.type === 'running' && 
       activity.distance >= 4.9 && 
@@ -450,7 +456,8 @@ export function useActivities() {
       : null;
 
     return {
-      totalKmThisMonth: Math.round(totalKm * 10) / 10,
+      totalRunningKmThisMonth: Math.round(totalRunningKm * 10) / 10,
+      totalAllKmThisMonth: Math.round(totalAllKm * 10) / 10,
       totalActivitiesThisMonth: thisMonthActivities.length,
       best5KTime,
     };
