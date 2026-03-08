@@ -515,6 +515,30 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
                 />
               </div>
             </TabsContent>
+
+            {/* Grip Form */}
+            <TabsContent value="grip" className="space-y-4 pt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>Reps (stisků)</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 20"
+                    value={gripReps}
+                    onChange={(e) => setGripReps(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Sets (série)</Label>
+                  <Input
+                    type="number"
+                    placeholder="e.g., 3"
+                    value={gripSets}
+                    onChange={(e) => setGripSets(e.target.value)}
+                  />
+                </div>
+              </div>
+            </TabsContent>
           </Tabs>
 
           <Button onClick={handleSubmit} className="w-full">

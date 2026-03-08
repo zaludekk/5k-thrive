@@ -51,7 +51,13 @@ export interface CyclingActivity extends BaseActivity {
   elevationGain?: number; // in meters
 }
 
-export type Activity = RunningActivity | SquatsActivity | PushupActivity | PlankActivity | SwimmingActivity | WalkingActivity | CyclingActivity;
+export interface GripActivity extends BaseActivity {
+  type: 'grip';
+  reps?: number;
+  sets?: number;
+}
+
+export type Activity = RunningActivity | SquatsActivity | PushupActivity | PlankActivity | SwimmingActivity | WalkingActivity | CyclingActivity | GripActivity;
 
 export interface ActivityStats {
   totalRunningKmThisMonth: number;
