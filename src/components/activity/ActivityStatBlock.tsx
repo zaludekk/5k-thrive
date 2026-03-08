@@ -28,6 +28,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const getGradientClass = () => {
     if (isSquats) return 'from-neon-green/20 to-neon-cyan/10 border-neon-green/40';
     if (isPushup) return 'from-neon-purple/20 to-neon-pink/10 border-neon-purple/40';
+    if (isGrip) return 'from-neon-cyan/20 to-neon-green/10 border-neon-cyan/40';
     return 'from-neon-orange/20 to-neon-pink/10 border-neon-orange/40';
   };
 
