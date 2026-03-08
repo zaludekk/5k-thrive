@@ -35,6 +35,7 @@ export function ActivityStatBlock({ activity }: ActivityStatBlockProps) {
   const getIconBgClass = () => {
     if (isSquats) return 'bg-neon-green/20 text-neon-green';
     if (isPushup) return 'bg-neon-purple/20 text-neon-purple';
+    if (isGrip) return 'bg-neon-cyan/20 text-neon-cyan';
     return 'bg-neon-orange/20 text-neon-orange';
   };
 
