@@ -292,6 +292,14 @@ export function useActivities() {
         duration: cycleActivity.duration,
         elevation_gain: cycleActivity.elevationGain,
       };
+    } else if (activity.type === 'grip') {
+      const gripActivity = activity as Omit<GripActivity, 'id' | 'createdAt'>;
+      insertData = {
+        ...baseData,
+        name: 'Grip',
+        reps: gripActivity.reps,
+        sets: gripActivity.sets,
+      };
     }
 
     const { error } = await supabase.from('activities').insert(insertData);
