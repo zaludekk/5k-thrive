@@ -260,7 +260,7 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
 
           {/* Activity Type Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as ActivityType)}>
-            <TabsList className="grid w-full grid-cols-7">
+            <TabsList className="grid w-full grid-cols-8">
               <TabsTrigger value="running" className="gap-1 text-xs px-1">
                 <span>🏃</span><span className="hidden sm:inline">Run</span>
               </TabsTrigger>
