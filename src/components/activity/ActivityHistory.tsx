@@ -192,11 +192,11 @@ export function ActivityHistory({ activities, onUpdate, onDelete }: ActivityHist
 
   // Separate strength activities for stat blocks
   const strengthActivities = sortedActivities.filter(
-    a => a.type === 'squats' || a.type === 'pushup' || a.type === 'plank'
-  ) as (SquatsActivity | PushupActivity | PlankActivity)[];
+    a => a.type === 'squats' || a.type === 'pushup' || a.type === 'plank' || a.type === 'grip'
+  ) as (SquatsActivity | PushupActivity | PlankActivity | GripActivity)[];
   
   const otherActivities = sortedActivities.filter(
-    a => a.type !== 'squats' && a.type !== 'pushup' && a.type !== 'plank'
+    a => a.type !== 'squats' && a.type !== 'pushup' && a.type !== 'plank' && a.type !== 'grip'
   );
 
   return (

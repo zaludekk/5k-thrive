@@ -414,6 +414,20 @@ export function useActivities() {
         feeling: null,
         steps: null,
       };
+    } else if (updatedActivity.type === 'grip') {
+      const gripActivity = updatedActivity as GripActivity;
+      updateData = {
+        ...updateData,
+        name: 'Grip',
+        reps: gripActivity.reps,
+        sets: gripActivity.sets,
+        distance: null,
+        time: null,
+        feeling: null,
+        duration: null,
+        steps: null,
+        elevation_gain: null,
+      };
     }
 
     const { error } = await supabase
