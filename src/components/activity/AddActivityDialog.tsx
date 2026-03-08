@@ -143,7 +143,7 @@ export function AddActivityDialog({ onAdd, editActivity, onUpdate, open, onOpenC
   const handleSubmit = () => {
     const dateStr = format(date, 'yyyy-MM-dd');
     
-    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'> | Omit<CyclingActivity, 'id' | 'createdAt'>;
+    let activityData: Omit<RunningActivity, 'id' | 'createdAt'> | Omit<SquatsActivity, 'id' | 'createdAt'> | Omit<PushupActivity, 'id' | 'createdAt'> | Omit<PlankActivity, 'id' | 'createdAt'> | Omit<SwimmingActivity, 'id' | 'createdAt'> | Omit<WalkingActivity, 'id' | 'createdAt'> | Omit<CyclingActivity, 'id' | 'createdAt'> | Omit<GripActivity, 'id' | 'createdAt'>;
     
     if (activeTab === 'running') {
       activityData = {
