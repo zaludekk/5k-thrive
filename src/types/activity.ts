@@ -1,4 +1,4 @@
-export type ActivityType = 'running' | 'squats' | 'pushup' | 'plank' | 'swimming' | 'walking' | 'cycling';
+export type ActivityType = 'running' | 'squats' | 'pushup' | 'plank' | 'swimming' | 'walking' | 'cycling' | 'grip';
 
 export interface BaseActivity {
   id: string;
