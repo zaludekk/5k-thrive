@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useActivities } from '@/hooks/useActivities';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { GoalProgress } from '@/components/dashboard/GoalProgress';
@@ -7,11 +8,25 @@ import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
+import { Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { exportActivitiesToCSV } from '@/lib/exportActivities';
+import { format } from 'date-fns';
+import { cs } from 'date-fns/locale';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Index = () => {
   const { activities, isLoading, addActivity, updateActivity, deleteActivity, getStats } = useActivities();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const goToPrevMonth = () => {
+    setSelectedDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+
+  const goToNextMonth = () => {
+    setSelectedDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
+  const isCurrentMonth = selectedDate.getMonth() === new Date().getMonth() && selectedDate.getFullYear() === new Date().getFullYear();
   
   if (isLoading) {
     return (
@@ -21,7 +36,7 @@ const Index = () => {
     );
   }
 
-  const stats = getStats();
+  const stats = getStats(selectedDate);
 
   const handleAddActivity = (activity: Omit<Activity, 'id' | 'createdAt'>) => {
     addActivity(activity);
@@ -55,6 +70,23 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container max-w-4xl mx-auto px-4 py-6 space-y-6">
+        {/* Month Picker */}
+        <Card className="glass-panel border-neon-cyan/20">
+          <CardContent className="py-3 px-4">
+            <div className="flex items-center justify-center gap-4">
+              <Button variant="ghost" size="icon" onClick={goToPrevMonth} className="text-muted-foreground hover:text-neon-cyan">
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <span className="text-lg font-bold text-neon-cyan neon-text-cyan uppercase tracking-widest min-w-[180px] text-center">
+                {format(selectedDate, 'LLLL yyyy', { locale: cs })}
+              </span>
+              <Button variant="ghost" size="icon" onClick={goToNextMonth} disabled={isCurrentMonth} className="text-muted-foreground hover:text-neon-cyan disabled:opacity-30">
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Stats Overview */}
         <StatsCards stats={stats} />
 
