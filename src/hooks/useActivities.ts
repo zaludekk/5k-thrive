@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity } from '@/types/activity';
+import { Activity, ActivityStats, RunningActivity, SquatsActivity, PushupActivity, PlankActivity, SwimmingActivity, WalkingActivity, CyclingActivity, GripActivity } from '@/types/activity';
 import { supabase } from '@/integrations/supabase/client';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
