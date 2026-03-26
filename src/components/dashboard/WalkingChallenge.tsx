@@ -9,14 +9,11 @@ interface WalkingChallengeProps {
 const TOTAL_DISTANCE_KM = 1030; // Zlín to Paris
 
 const MILESTONES = [
-  { name: 'Plzeň', distance: 90, icon: '🍺' },
-  { name: 'Zlín', distance: 150, icon: '👟' },
-  { name: 'Nuremberg', distance: 300, icon: '🏰' },
-  { name: 'Vídeň', distance: 350, icon: '🎻' },
-  { name: 'Mnichov', distance: 430, icon: '🥨' },
-  { name: 'Stuttgart', distance: 500, icon: '🚗' },
-  { name: 'Metz', distance: 700, icon: '⛪' },
-  { name: 'Reims', distance: 870, icon: '🥂' },
+  { name: 'Vídeň', distance: 200, icon: '🎻' },
+  { name: 'Mnichov', distance: 400, icon: '🥨' },
+  { name: 'Stuttgart', distance: 550, icon: '🚗' },
+  { name: 'Metz', distance: 750, icon: '⛪' },
+  { name: 'Reims', distance: 900, icon: '🥂' },
   { name: 'Paris', distance: 1030, icon: '🗼' },
 ];
 
