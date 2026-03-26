@@ -10,7 +10,10 @@ const TOTAL_DISTANCE_KM = 1030; // Prague to Paris
 
 const MILESTONES = [
   { name: 'Plzeň', distance: 90, icon: '🍺' },
+  { name: 'Zlín', distance: 150, icon: '👟' },
   { name: 'Nuremberg', distance: 300, icon: '🏰' },
+  { name: 'Vídeň', distance: 350, icon: '🎻' },
+  { name: 'Mnichov', distance: 430, icon: '🥨' },
   { name: 'Stuttgart', distance: 500, icon: '🚗' },
   { name: 'Metz', distance: 700, icon: '⛪' },
   { name: 'Reims', distance: 870, icon: '🥂' },
