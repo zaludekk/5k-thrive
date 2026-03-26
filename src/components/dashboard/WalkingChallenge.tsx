@@ -6,7 +6,7 @@ interface WalkingChallengeProps {
   activities: Activity[];
 }
 
-const TOTAL_DISTANCE_KM = 1030; // Prague to Paris
+const TOTAL_DISTANCE_KM = 1030; // Zlín to Paris
 
 const MILESTONES = [
   { name: 'Plzeň', distance: 90, icon: '🍺' },
@@ -55,7 +55,7 @@ export function WalkingChallenge({ activities }: WalkingChallengeProps) {
             )}
           </div>
           <p className="text-xs text-muted-foreground">
-            Prague → Paris • {TOTAL_DISTANCE_KM} km
+            Zlín → Paris • {TOTAL_DISTANCE_KM} km
           </p>
         </div>
       </div>
@@ -87,7 +87,7 @@ export function WalkingChallenge({ activities }: WalkingChallengeProps) {
                 Next stop: {nextMilestone.name}
               </p>
               <p className="text-xs text-muted-foreground">
-                {nextMilestone.distance} km from Prague
+                {nextMilestone.distance} km from Zlín
               </p>
             </div>
           )}
@@ -95,7 +95,7 @@ export function WalkingChallenge({ activities }: WalkingChallengeProps) {
           {/* Progress bar */}
           <div className="space-y-2">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>🏁 Prague</span>
+              <span>🏁 Zlín</span>
               <span className="text-walking font-medium">🗼 Paris</span>
             </div>
             <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/30">
