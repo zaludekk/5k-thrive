@@ -4,6 +4,7 @@ import { StatsCards } from '@/components/dashboard/StatsCards';
 import { GoalProgress } from '@/components/dashboard/GoalProgress';
 import { ActivityHeatmap } from '@/components/dashboard/ActivityHeatmap';
 import { PaceEvolution } from '@/components/dashboard/PaceEvolution';
+import { DistanceEvolution } from '@/components/dashboard/DistanceEvolution';
 import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
@@ -98,6 +99,9 @@ const Index = () => {
 
         {/* Pace Evolution Chart */}
         <PaceEvolution activities={activities} />
+
+        {/* Distance Evolution Chart */}
+        <DistanceEvolution activities={activities} />
 
         {/* Activity History */}
         <ActivityHistory 
