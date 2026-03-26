@@ -100,6 +100,9 @@ const Index = () => {
         {/* Pace Evolution Chart */}
         <PaceEvolution activities={activities} />
 
+        {/* Distance Evolution Chart */}
+        <DistanceEvolution activities={activities} />
+
         {/* Activity History */}
         <ActivityHistory 
           activities={activities} 
