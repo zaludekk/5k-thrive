@@ -94,21 +94,21 @@ const Index = () => {
         {/* Goal Progress */}
         <GoalProgress currentBestTime={stats.best5KTime} />
 
-        {/* Activity Heatmap */}
-        <ActivityHeatmap activities={activities} />
-
         {/* Pace Evolution Chart */}
         <PaceEvolution activities={activities} />
 
         {/* Distance Evolution Chart */}
         <DistanceEvolution activities={activities} />
 
-        {/* Activity History */}
+        {/* Activity History (includes Walk to Mordor & Ride to Rome) */}
         <ActivityHistory 
           activities={activities} 
           onUpdate={updateActivity}
           onDelete={deleteActivity}
         />
+
+        {/* Activity Heatmap */}
+        <ActivityHeatmap activities={activities} />
 
       </main>
 
