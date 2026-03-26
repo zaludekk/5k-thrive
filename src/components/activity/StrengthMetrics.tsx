@@ -9,14 +9,17 @@ interface StrengthMetricsProps {
 
 // Squat Climb Challenge landmarks (progressive order)
 const SQUAT_LANDMARKS = [
+  { name: 'Leaning Tower of Pisa', height: 56, icon: '🏛️' },
   { name: 'Statue of Liberty', height: 93, icon: '🗽' },
   { name: 'Big Ben', height: 96, icon: '🕰️' },
-  { name: 'Leaning Tower of Pisa', height: 56, icon: '🏛️' },
-  { name: 'Empire State Building', height: 443, icon: '🏙️' },
   { name: 'Eiffel Tower', height: 330, icon: '🗼' },
+  { name: 'Empire State Building', height: 443, icon: '🏙️' },
   { name: 'Burj Khalifa', height: 828, icon: '🏗️' },
+  { name: 'Mount Fuji', height: 3776, icon: '🗻' },
+  { name: 'Mont Blanc', height: 4808, icon: '⛰️' },
+  { name: 'Kilimanjaro', height: 5895, icon: '🌋' },
   { name: 'Mount Everest', height: 8849, icon: '🏔️' },
-].sort((a, b) => a.height - b.height); // Ensure sorted by height
+].sort((a, b) => a.height - b.height);
 
 // Weight comparisons in kg
 const WEIGHT_COMPARISONS = [
