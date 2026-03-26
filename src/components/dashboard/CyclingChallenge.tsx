@@ -5,7 +5,7 @@ interface CyclingChallengeProps {
   activities: Activity[];
 }
 
-const TOTAL_DISTANCE_KM = 1300; // Prague to Rome
+const TOTAL_DISTANCE_KM = 1300; // Zlín to Rome
 
 const MILESTONES = [
   { name: 'Munich', distance: 300, icon: '🍻' },
@@ -50,7 +50,7 @@ export function CyclingChallenge({ activities }: CyclingChallengeProps) {
             )}
           </div>
           <p className="text-xs text-muted-foreground">
-            Prague → Rome • {TOTAL_DISTANCE_KM} km
+            Zlín → Rome • {TOTAL_DISTANCE_KM} km
           </p>
         </div>
       </div>
@@ -81,14 +81,14 @@ export function CyclingChallenge({ activities }: CyclingChallengeProps) {
                 Next stop: {nextMilestone.name}
               </p>
               <p className="text-xs text-muted-foreground">
-                {nextMilestone.distance} km from Prague
+                {nextMilestone.distance} km from Zlín
               </p>
             </div>
           )}
 
           <div className="space-y-2">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>🏁 Prague</span>
+              <span>🏁 Zlín</span>
               <span className="text-cycling font-medium">🏟️ Rome</span>
             </div>
             <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/30">
