@@ -6,6 +6,7 @@ import { ActivityHeatmap } from '@/components/dashboard/ActivityHeatmap';
 import { PaceEvolution } from '@/components/dashboard/PaceEvolution';
 import { DistanceEvolution } from '@/components/dashboard/DistanceEvolution';
 import { AddActivityDialog } from '@/components/activity/AddActivityDialog';
+import { VoiceActivityButton } from '@/components/activity/VoiceActivityButton';
 import { ActivityHistory } from '@/components/activity/ActivityHistory';
 import { Activity } from '@/types/activity';
 import { Button } from '@/components/ui/button';
@@ -63,6 +64,7 @@ const Index = () => {
                 <Download className="h-4 w-4 mr-1" />
                 Download Data
               </Button>
+              <VoiceActivityButton onAdd={handleAddActivity} />
               <AddActivityDialog onAdd={handleAddActivity} />
             </div>
           </div>
