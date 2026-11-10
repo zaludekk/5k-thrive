@@ -103,6 +103,10 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
   
   const squatsToComplete = Math.ceil((segmentEnd - totalHeight) / heightPerSquat);
   const conqueredLandmarks = SQUAT_LANDMARKS.filter(l => totalHeight >= l.height);
+  const isSpaceChallenge = activeLandmark.planet !== 'Earth';
+  const climbGradient = isSpaceChallenge
+    ? 'linear-gradient(90deg, hsl(var(--neon-purple)), hsl(var(--neon-pink)))'
+    : 'linear-gradient(90deg, hsl(var(--neon-green)), hsl(var(--neon-cyan)))';
 
   // Calculate push-up metrics
   const pushupActivities = activities.filter(a => a.type === 'pushup') as PushupActivity[];
@@ -143,7 +147,7 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
                 )}
               </div>
               <p className="text-xs text-muted-foreground">
-                {totalSquats} squats = {totalHeight.toFixed(1)}m climbed
+                {totalSquats} squats = {formatMeters(totalHeight)}m climbed
               </p>
             </div>
           </div>
@@ -156,9 +160,10 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
                 LEGENDARY CLIMBER!
               </p>
               <p className="text-sm text-muted-foreground">
-                You've conquered Mount Everest! ({totalHeight.toFixed(0)}m)
+                You've conquered {SQUAT_LANDMARKS[SQUAT_LANDMARKS.length - 1].name} on{' '}
+                {SQUAT_LANDMARKS[SQUAT_LANDMARKS.length - 1].planet}! ({formatMeters(totalHeight)}m)
               </p>
-              <div className="flex justify-center gap-2 mt-2">
+              <div className="flex justify-center gap-2 mt-2 flex-wrap">
                 {SQUAT_LANDMARKS.map(l => (
                   <span key={l.name} className="text-xl" title={l.name}>
                     {l.icon}
@@ -172,20 +177,26 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
               {/* Current target landmark */}
               <div className="text-center py-2">
                 <span className="text-4xl">{activeLandmark.icon}</span>
-                <p className="text-sm font-semibold text-neon-green mt-1">
+                <p className={`text-sm font-semibold mt-1 ${isSpaceChallenge ? 'text-neon-pink' : 'text-neon-green'}`}>
                   Climbing: {activeLandmark.name}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {activeLandmark.height}m tall
+                  {isSpaceChallenge && <span className="text-neon-purple font-semibold">{activeLandmark.planet} · </span>}
+                  {formatMeters(activeLandmark.height)}m tall
                 </p>
+                {isSpaceChallenge && (
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-neon-purple/80 mt-1">
+                    🚀 Beyond Earth
+                  </p>
+                )}
               </div>
 
               {/* Progress bar */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{previousLandmark ? `${previousLandmark.icon} ${previousLandmark.height}m` : '🏁 0m'}</span>
-                  <span className="text-neon-green font-medium">
-                    {activeLandmark.icon} {activeLandmark.height}m
+                  <span>{previousLandmark ? `${previousLandmark.icon} ${formatMeters(previousLandmark.height)}m` : '🏁 0m'}</span>
+                  <span className={isSpaceChallenge ? 'text-neon-pink font-medium' : 'text-neon-green font-medium'}>
+                    {activeLandmark.icon} {formatMeters(activeLandmark.height)}m
                   </span>
                 </div>
                 <div className="relative h-4 w-full overflow-hidden rounded-full bg-muted/30">
@@ -193,7 +204,7 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
                     className="h-full transition-all duration-500 rounded-full relative"
                     style={{ 
                       width: `${Math.min(segmentProgress, 100)}%`,
-                      background: 'linear-gradient(90deg, hsl(var(--neon-green)), hsl(var(--neon-cyan)))'
+                      background: climbGradient
                     }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
@@ -201,9 +212,9 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
                 </div>
                 <div className="flex justify-between text-xs">
                   <span className="text-muted-foreground">
-                    {totalHeight.toFixed(1)}m climbed
+                    {formatMeters(totalHeight)}m climbed
                   </span>
-                  <span className="text-neon-green font-semibold">
+                  <span className={isSpaceChallenge ? 'text-neon-pink font-semibold' : 'text-neon-green font-semibold'}>
                     {segmentProgress.toFixed(0)}%
                   </span>
                 </div>
@@ -211,7 +222,7 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
 
               {/* Motivation message */}
               <p className="text-xs text-center text-muted-foreground">
-                🔥 <span className="text-neon-green font-semibold">{squatsToComplete}</span> more squats to reach {activeLandmark.name}!
+                🔥 <span className={isSpaceChallenge ? 'text-neon-pink font-semibold' : 'text-neon-green font-semibold'}>{squatsToComplete}</span> more squats to reach {activeLandmark.name}!
               </p>
 
               {/* Conquered landmarks */}
