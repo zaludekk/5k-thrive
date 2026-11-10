@@ -79,6 +79,11 @@ function getWeightComparison(totalWeight: number) {
   return { count, comparison };
 }
 
+// Format metres with thousands separators (18,000m reads better than 18000m)
+function formatMeters(meters: number) {
+  return meters.toLocaleString('en-US', { maximumFractionDigits: 1 });
+}
+
 export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetricsProps) {
   // Calculate squats metrics
   const squatActivities = activities.filter(a => a.type === 'squats') as SquatsActivity[];
@@ -157,7 +162,7 @@ export function StrengthMetrics({ activities, bodyWeight = 70 }: StrengthMetrics
             <div className="text-center py-4 space-y-2">
               <div className="text-4xl animate-bounce">🏆</div>
               <p className="text-neon-green font-bold text-lg neon-text-green">
-                LEGENDARY CLIMBER!
+                INTERPLANETARY LEGEND!
               </p>
               <p className="text-sm text-muted-foreground">
                 You've conquered {SQUAT_LANDMARKS[SQUAT_LANDMARKS.length - 1].name} on{' '}
