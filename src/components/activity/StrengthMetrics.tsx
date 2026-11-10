@@ -8,17 +8,22 @@ interface StrengthMetricsProps {
 }
 
 // Squat Climb Challenge landmarks (progressive order)
-const SQUAT_LANDMARKS = [
-  { name: 'Leaning Tower of Pisa', height: 56, icon: '🏛️' },
-  { name: 'Statue of Liberty', height: 93, icon: '🗽' },
-  { name: 'Big Ben', height: 96, icon: '🕰️' },
-  { name: 'Eiffel Tower', height: 330, icon: '🗼' },
-  { name: 'Empire State Building', height: 443, icon: '🏙️' },
-  { name: 'Burj Khalifa', height: 828, icon: '🏗️' },
-  { name: 'Mount Fuji', height: 3776, icon: '🗻' },
-  { name: 'Mont Blanc', height: 4808, icon: '⛰️' },
-  { name: 'Kilimanjaro', height: 5895, icon: '🌋' },
-  { name: 'Mount Everest', height: 8849, icon: '🏔️' },
+// `planet` marks the world the peak stands on — anything but Earth is the
+// extra-planetary tier unlocked after Everest.
+export const SQUAT_LANDMARKS = [
+  { name: 'Leaning Tower of Pisa', height: 56, icon: '🏛️', planet: 'Earth' },
+  { name: 'Statue of Liberty', height: 93, icon: '🗽', planet: 'Earth' },
+  { name: 'Big Ben', height: 96, icon: '🕰️', planet: 'Earth' },
+  { name: 'Eiffel Tower', height: 330, icon: '🗼', planet: 'Earth' },
+  { name: 'Empire State Building', height: 443, icon: '🏙️', planet: 'Earth' },
+  { name: 'Burj Khalifa', height: 828, icon: '🏗️', planet: 'Earth' },
+  { name: 'Mount Fuji', height: 3776, icon: '🗻', planet: 'Earth' },
+  { name: 'Mont Blanc', height: 4808, icon: '⛰️', planet: 'Earth' },
+  { name: 'Kilimanjaro', height: 5895, icon: '🌋', planet: 'Earth' },
+  { name: 'Mount Everest', height: 8849, icon: '🏔️', planet: 'Earth' },
+  // Beyond Earth
+  { name: 'Boösaule Montes', height: 18000, icon: '🌕', planet: 'Io (Jupiter)' },
+  { name: 'Olympus Mons', height: 22000, icon: '🔴', planet: 'Mars' },
 ].sort((a, b) => a.height - b.height);
 
 // Weight comparisons in kg
@@ -38,7 +43,7 @@ function getActiveLandmark(currentHeight: number) {
       return landmark;
     }
   }
-  // If we've conquered all, return the last one (Everest)
+  // If we've conquered all, return the last one (Olympus Mons)
   return SQUAT_LANDMARKS[SQUAT_LANDMARKS.length - 1];
 }
 
