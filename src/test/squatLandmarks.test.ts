@@ -18,6 +18,28 @@ describe("Squat Climb Challenge landmarks", () => {
     );
   });
 
+  it("fills the gap between Everest and Olympus Mons with real space peaks", () => {
+    const beyondEarth = SQUAT_LANDMARKS.filter(l => l.planet !== "Earth");
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Euboea Montes", height: 10000, planet: "Io (Jupiter)" })
+    );
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Maxwell Montes", height: 11000, planet: "Venus" })
+    );
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Pavonis Mons", height: 14000, planet: "Mars" })
+    );
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Arsia Mons", height: 17700, planet: "Mars" })
+    );
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Ascraeus Mons", height: 18200, planet: "Mars" })
+    );
+    expect(beyondEarth).toContainEqual(
+      expect.objectContaining({ name: "Rheasilvia", height: 20500, planet: "Vesta (asteroid)" })
+    );
+  });
+
   it("makes Olympus Mons on Mars the final goal at 22,000 m", () => {
     expect(SQUAT_LANDMARKS[SQUAT_LANDMARKS.length - 1]).toMatchObject({
       name: "Olympus Mons",

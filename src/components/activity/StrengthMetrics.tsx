@@ -22,7 +22,13 @@ export const SQUAT_LANDMARKS = [
   { name: 'Kilimanjaro', height: 5895, icon: '🌋', planet: 'Earth' },
   { name: 'Mount Everest', height: 8849, icon: '🏔️', planet: 'Earth' },
   // Beyond Earth
+  { name: 'Euboea Montes', height: 10000, icon: '🌋', planet: 'Io (Jupiter)' },
+  { name: 'Maxwell Montes', height: 11000, icon: '🟡', planet: 'Venus' },
+  { name: 'Pavonis Mons', height: 14000, icon: '🔴', planet: 'Mars' },
+  { name: 'Arsia Mons', height: 17700, icon: '🔴', planet: 'Mars' },
   { name: 'Boösaule Montes', height: 18000, icon: '🌕', planet: 'Io (Jupiter)' },
+  { name: 'Ascraeus Mons', height: 18200, icon: '🔴', planet: 'Mars' },
+  { name: 'Rheasilvia', height: 20500, icon: '☄️', planet: 'Vesta (asteroid)' },
   { name: 'Olympus Mons', height: 22000, icon: '🔴', planet: 'Mars' },
 ].sort((a, b) => a.height - b.height);
 
